@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
+	"github.com/jmrflora/blogx/cmd/handler"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -16,11 +17,15 @@ func main() {
 
 	db.Ping()
 
-	// exactly the same as the built-in
-
-	u := uuid.New()
-	println(u.String())
 	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.Static("/assets", "internal/assets")
+
+	e.POST("/upload", handler.HandleUpload)
+
+	e.GET("/", handler.HandleIndex)
 
 	e.Logger.Fatal(e.Start(":1323"))
 
