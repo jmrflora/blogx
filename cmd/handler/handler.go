@@ -61,3 +61,15 @@ func HandleIndex(c echo.Context) error {
 
 	return views.Renderizar(cmp, c)
 }
+
+func HandlePaginaLogin(c echo.Context) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	cmp := paginas.PaginaLogin()
+
+	return views.Renderizar(cmp, c)
+}
+
+// func HandleLogin(c echo.Context) error {
+
+// }

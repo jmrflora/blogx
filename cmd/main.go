@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/jmrflora/blogx/cmd/handler"
 	"github.com/labstack/echo/v4"
@@ -26,6 +28,12 @@ func main() {
 	e.POST("/upload", handler.HandleUpload)
 
 	e.GET("/", handler.HandleIndex)
+	e.GET("/paginalogin", handler.HandlePaginaLogin)
+
+	e.POST("/login", func(c echo.Context) error {
+		println("i tried")
+		return c.String(http.StatusOK, "there was an attempt")
+	})
 
 	e.Logger.Fatal(e.Start(":1323"))
 
