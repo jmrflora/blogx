@@ -12,3 +12,9 @@ type UsuarioGetDTO struct {
 	Nome  string
 	Email string
 }
+
+type UsuarioCreateDTO struct {
+	Nome  string
+	Email string
+	Senha string
+}
