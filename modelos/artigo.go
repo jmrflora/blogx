@@ -1,9 +1,23 @@
 package modelos
 
-import "github.com/google/uuid"
-
 type Artigo struct {
-	Uuid      uuid.UUID
+	Uuid      string
+	Titulo    string
+	Subtitulo string
+	IdAutor   int
+	Estrelas  int
+}
+
+type ArtigoGetDTO struct {
+	Uuid      string
+	Titulo    string
+	Subtitulo string
+	IdAutor   int
+	Estrelas  int
+}
+
+type ArtigoCreateDTO struct {
+	Uuid      string
 	Titulo    string
 	Subtitulo string
 	IdAutor   int

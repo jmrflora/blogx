@@ -29,3 +29,30 @@ func CreateUsuario(tx *sqlx.Tx, u *modelos.UsuarioCreateDTO) (sql.Result, error)
 	}
 	return result, nil
 }
+
+func GetArtigoPorId(tx *sqlx.Tx, id string) (*modelos.ArtigoGetDTO, error) {
+	a := modelos.ArtigoGetDTO{}
+
+	err := tx.Get(&a, "SELECT artigo.uuid, artigo.titulo, artigo.subtitulo, artigo.idautor, artigo.estrelas from artigo where artigo.uuid = $1 limit 1", id)
+
+	if err != nil {
+		return nil, err
+	}
+	return &a, nil
+
+}
+
+func CreateArtigo(tx *sqlx.Tx, a *modelos.ArtigoCreateDTO) (sql.Result, error) {
+	nstmt, err := tx.PrepareNamed("INSERT INTO artigo (uuid, titulo, subtitulo, idautor, estrelas) values (:uuid, :titulo, :subtitulo, :idautor, :estrelas)")
+
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := nstmt.Exec(a)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+
+}
