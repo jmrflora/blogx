@@ -9,7 +9,6 @@ require (
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/stretchr/testify v1.8.4
-	gopkg.in/go-playground/assert.v1 v1.2.1
 )
 
 require (
