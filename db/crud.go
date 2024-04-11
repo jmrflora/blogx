@@ -92,6 +92,7 @@ func CategorizarArtigo(tx *sqlx.Tx, idArtigo string, idsCategoria []int) (sql.Re
 func CreateBlog(tx *sqlx.Tx, b *modelos.BlogCreateDTO) (sql.Result, error) {
 	_, err := CreateArtigo(tx, &b.ArtigoCreateDTO)
 	if err != nil {
+		println("aqui 2")
 		return nil, err
 	}
 	result, err := CategorizarArtigo(tx, b.Uuid, b.CategoriasIds)

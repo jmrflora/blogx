@@ -1,0 +1,22 @@
+package partials
+
+templ Uploadartigo(){
+    <form hx-encoding="multipart/form-data" hx-post="/upload" 
+        _="on htmx:xhr:progress(loaded, total) set #progress.value to (loaded/total)*100">
+        <!-- ArtigoRegistroDTO fields -->
+        Titulo: <input type="text" name="Titulo" /><br/>
+        Subtitulo: <input type="text" name="Subtitulo" /><br/>
+        IdAutor: <input type="number" name="IdAutor" /><br/>
+        
+        <!-- BlogRegistroDTO specific field -->
+        <!-- Since CategoriasIds is a slice of integers, you can use multiple input fields with the same name -->
+        CategoriasIds: <input type="number" name="CategoriasIds" /><br/>
+        CategoriasIds: <input type="number" name="CategoriasIds" /><br/>
+        <input type='file' name='file' />
+        <button>
+            Upload
+        </button>
+        <progress id='progress' value='0' max='100'></progress>
+    </form>
+}
+

@@ -28,5 +28,4 @@ type ArtigoRegistroDTO struct {
 	Titulo    string
 	Subtitulo string
 	IdAutor   int
-	Estrelas  int
 }

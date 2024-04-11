@@ -8,12 +8,49 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
+	"github.com/jmoiron/sqlx"
+	"github.com/jmrflora/blogx/db"
+	"github.com/jmrflora/blogx/modelos"
 	"github.com/jmrflora/blogx/views"
 	"github.com/jmrflora/blogx/views/paginas"
 	"github.com/labstack/echo/v4"
 )
 
-func HandleUpload(c echo.Context) error {
+type Handler struct {
+	Dbaccess sqlx.DB
+}
+
+func (h *Handler) HandleUpload(c echo.Context) error {
+	var blog modelos.BlogRegistroDTO
+
+	err := c.Bind(&blog)
+	if err != nil {
+		return err
+	}
+
+	tx, err := h.Dbaccess.Beginx()
+	defer tx.Rollback()
+	if err != nil {
+		return err
+	}
+
+	b := modelos.BlogCreateDTO{
+		ArtigoCreateDTO: modelos.ArtigoCreateDTO{
+			Uuid:      uuid.NewString(),
+			Titulo:    blog.Titulo,
+			Subtitulo: blog.Subtitulo,
+			IdAutor:   blog.IdAutor,
+			Estrelas:  0,
+		},
+		CategoriasIds: blog.CategoriasIds,
+	}
+
+	_, err = db.CreateBlog(tx, &b)
+	if err != nil {
+		println("aquiiiiiiii")
+		return err
+	}
+
 	//-----------
 	// Read file
 	//-----------
@@ -31,8 +68,6 @@ func HandleUpload(c echo.Context) error {
 
 	// Destination
 
-	id := uuid.New()
-
 	// Destination directory
 	uploadDir := "internal/assets/markdowns/usuariologado"
 
@@ -43,7 +78,7 @@ func HandleUpload(c echo.Context) error {
 			return err
 		}
 	}
-	dstPath := filepath.Join(uploadDir, id.String())
+	dstPath := filepath.Join(uploadDir, b.Uuid)
 	dst, err := os.Create(dstPath)
 	if err != nil {
 		return err
@@ -55,6 +90,7 @@ func HandleUpload(c echo.Context) error {
 		return err
 	}
 
+	tx.Commit()
 	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully</p>", file.Filename))
 }
 
@@ -69,6 +105,14 @@ func HandlePaginaLogin(c echo.Context) error {
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 
 	cmp := paginas.PaginaLogin()
+
+	return views.Renderizar(cmp, c)
+}
+
+func (h *Handler) HandlePaginaUpload(c echo.Context) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	cmp := paginas.PaginaUpload()
 
 	return views.Renderizar(cmp, c)
 }

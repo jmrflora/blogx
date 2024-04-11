@@ -9,3 +9,8 @@ type BlogCreateDTO struct {
 	ArtigoCreateDTO
 	CategoriasIds []int
 }
+
+type BlogRegistroDTO struct {
+	ArtigoRegistroDTO
+	CategoriasIds []int
+}

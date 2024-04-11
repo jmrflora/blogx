@@ -21,9 +21,11 @@ func main() {
 
 	println(id.String())
 
-	db := sqlx.MustConnect("sqlite3", "../mydb.db")
+	db := sqlx.MustConnect("sqlite3", "mydb.db")
 
-	db.Ping()
+	h := handler.Handler{
+		Dbaccess: *db,
+	}
 
 	e := echo.New()
 	e.Use(middleware.Logger())
@@ -31,10 +33,13 @@ func main() {
 
 	e.Static("/assets", "internal/assets")
 
-	e.POST("/upload", handler.HandleUpload)
-
 	e.GET("/", handler.HandleIndex)
+
 	e.GET("/paginalogin", handler.HandlePaginaLogin)
+
+	e.GET("/paginaupload", h.HandlePaginaUpload)
+
+	e.POST("/upload", h.HandleUpload)
 
 	e.POST("/login", func(c echo.Context) error {
 		println("i tried")
