@@ -56,3 +56,47 @@ func CreateArtigo(tx *sqlx.Tx, a *modelos.ArtigoCreateDTO) (sql.Result, error) {
 	return result, nil
 
 }
+
+func CreateCategoria(tx *sqlx.Tx, c modelos.CategoriaCreateDTO) (sql.Result, error) {
+	nstmt, err := tx.PrepareNamed("INSERT INTO categoria (nomecateg) VALUES (:nomecategoria)")
+	if err != nil {
+		return nil, err
+	}
+	result, err := nstmt.Exec(c)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func CreateCategoriasDeArtigo(tx *sqlx.Tx, idArtigo string, idCategoria int) (sql.Result, error) {
+	result, err := tx.Exec("INSERT INTO categoriasdeartigo (idartigo, idcategoria) VALUES ($1, $2)", idArtigo, idCategoria)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func CategorizarArtigo(tx *sqlx.Tx, idArtigo string, idsCategoria []int) (sql.Result, error) {
+	var result sql.Result
+	var err error
+	for _, idCategoria := range idsCategoria {
+		result, err = CreateCategoriasDeArtigo(tx, idArtigo, idCategoria)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return result, nil
+}
+
+func CreateBlog(tx *sqlx.Tx, b *modelos.BlogCreateDTO) (sql.Result, error) {
+	_, err := CreateArtigo(tx, &b.ArtigoCreateDTO)
+	if err != nil {
+		return nil, err
+	}
+	result, err := CategorizarArtigo(tx, b.Uuid, b.CategoriasIds)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}

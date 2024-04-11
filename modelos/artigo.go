@@ -23,3 +23,10 @@ type ArtigoCreateDTO struct {
 	IdAutor   int
 	Estrelas  int
 }
+
+type ArtigoRegistroDTO struct {
+	Titulo    string
+	Subtitulo string
+	IdAutor   int
+	Estrelas  int
+}
