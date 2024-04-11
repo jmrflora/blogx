@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/google/uuid"
 	"github.com/jmrflora/blogx/views"
 	"github.com/jmrflora/blogx/views/paginas"
 	"github.com/labstack/echo/v4"
@@ -30,8 +31,10 @@ func HandleUpload(c echo.Context) error {
 
 	// Destination
 
+	id := uuid.New()
+
 	// Destination directory
-	uploadDir := "../internal/assets/markdowns"
+	uploadDir := "internal/assets/markdowns/usuariologado"
 
 	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
 		println("ola")
@@ -40,7 +43,7 @@ func HandleUpload(c echo.Context) error {
 			return err
 		}
 	}
-	dstPath := filepath.Join(uploadDir, file.Filename)
+	dstPath := filepath.Join(uploadDir, id.String())
 	dst, err := os.Create(dstPath)
 	if err != nil {
 		return err
