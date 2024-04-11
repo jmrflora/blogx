@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmrflora/blogx/cmd/handler"
 	"github.com/labstack/echo/v4"
@@ -15,6 +16,11 @@ func main() {
 	// if err != nil {
 	// 	println(err.Error())
 	// }
+
+	id := uuid.New()
+
+	println(id.String())
+
 	db := sqlx.MustConnect("sqlite3", "../mydb.db")
 
 	db.Ping()
