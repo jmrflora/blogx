@@ -2,7 +2,7 @@ package partials
 
 templ LoginPartial(email string){
     <div hx-target="this">
-        <form class="w-3/6"  hx-post="/login" hx-swap="outerHTML" hx-indicator="#indicador">
+        <form hx-post="/login" hx-swap="outerHTML" hx-indicator="#indicador">
 			<label>
                 if email != ""{
                 <input type="text" name="email" placeholder={ email }/>

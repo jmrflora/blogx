@@ -8,12 +8,16 @@ import (
 	"path/filepath"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmrflora/blogx/db"
 	"github.com/jmrflora/blogx/modelos"
 	"github.com/jmrflora/blogx/views"
 	"github.com/jmrflora/blogx/views/paginas"
+	"github.com/jmrflora/blogx/views/partials"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Handler struct {
@@ -117,6 +121,91 @@ func (h *Handler) HandlePaginaUpload(c echo.Context) error {
 	return views.Renderizar(cmp, c)
 }
 
-// func HandleLogin(c echo.Context) error {
+func (h *Handler) HandleLogin(c echo.Context) error {
+	u := modelos.UsuarioLoginDTO{}
 
-// }
+	if err := c.Bind(&u); err != nil {
+		return views.Renderizar(partials.LoginComErro(""), c)
+	}
+
+	//adicionar validação
+
+	tx, err := h.Dbaccess.Beginx()
+	defer tx.Rollback()
+	if err != nil {
+		return echo.ErrInternalServerError
+	}
+
+	usuarioDb, err := db.GetUsuarioComSenhaPorEmail(tx, u.Email)
+	if err != nil {
+		return views.Renderizar(partials.LoginComErro(""), c)
+	}
+	if ok := CheckPasswordHash(u.Senha, usuarioDb.Senha); !ok {
+		return views.Renderizar(partials.LoginComErro(""), c)
+	}
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	sess.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7,
+		HttpOnly: true,
+	}
+
+	sess.Values["email"] = usuarioDb.Email
+	sess.Values["nome"] = usuarioDb.Nome
+	sess.Values["permissao"] = "normal"
+
+	sess.Save(c.Request(), c.Response())
+	return c.Redirect(http.StatusSeeOther, "/home")
+}
+
+func (h *Handler) HandleRegistroUsuario(c echo.Context) error {
+	u := modelos.UsuarioRegistroDTO{}
+
+	if err := c.Bind(&u); err != nil {
+		return echo.ErrBadRequest
+	}
+
+	//adicionar validação
+
+	if u.Senha != u.ConfSenha {
+		return echo.ErrBadRequest
+	}
+
+	novaSenha, err := HashPassword(u.Senha)
+	if err != nil {
+		return echo.ErrInternalServerError
+	}
+	novoUsuario := modelos.UsuarioCreateDTO{
+		Nome:  u.Nome,
+		Email: u.Email,
+		Senha: novaSenha,
+	}
+
+	tx, err := h.Dbaccess.Beginx()
+	defer tx.Rollback()
+	if err != nil {
+		return echo.ErrInternalServerError
+	}
+
+	_, err = db.CreateUsuario(tx, &novoUsuario)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	tx.Commit()
+
+	return echo.NewHTTPError(http.StatusOK)
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}

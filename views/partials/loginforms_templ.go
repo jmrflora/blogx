@@ -23,7 +23,7 @@ func LoginPartial(email string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hx-target=\"this\"><form class=\"w-3/6\" hx-post=\"/login\" hx-swap=\"outerHTML\" hx-indicator=\"#indicador\"><label>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div hx-target=\"this\"><form hx-post=\"/login\" hx-swap=\"outerHTML\" hx-indicator=\"#indicador\"><label>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

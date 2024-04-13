@@ -4,8 +4,10 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmrflora/blogx/cmd/handler"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
@@ -28,6 +30,7 @@ func main() {
 	}
 
 	e := echo.New()
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
