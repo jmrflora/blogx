@@ -7,7 +7,9 @@ templ LoginPartial(email string){
                 if email != ""{
                 <input type="text" name="email" placeholder={ email }/>
                 }
+				else {
 				<input type="text" name="email" placeholder="email"/>
+				}
 			</label>
 			<label>
 				<input type="password" name="senha" />

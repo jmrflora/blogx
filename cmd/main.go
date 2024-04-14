@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
@@ -42,12 +40,15 @@ func main() {
 
 	e.GET("/paginaupload", h.HandlePaginaUpload)
 
+	e.GET("/paginaregistro", h.HandlePaginaRegistro)
+
+	e.POST("/registro", h.HandleRegistroUsuario)
+
+	e.POST("/registro/confsenha", h.HandleRegistroUsuarioConfSenha)
+
 	e.POST("/upload", h.HandleUpload)
 
-	e.POST("/login", func(c echo.Context) error {
-		println("i tried")
-		return c.String(http.StatusOK, "there was an attempt")
-	})
+	e.POST("/login", h.HandleLogin)
 
 	e.Logger.Fatal(e.Start(":1323"))
 

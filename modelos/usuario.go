@@ -14,7 +14,7 @@ type UsuarioGetDTO struct {
 }
 
 type UsuarioSenhaGetDTO struct {
-	Id    int
+	Id    int `db:"idusuario"`
 	Nome  string
 	Email string
 	Senha string
@@ -27,13 +27,13 @@ type UsuarioCreateDTO struct {
 }
 
 type UsuarioRegistroDTO struct {
-	Nome      string
-	Email     string
-	Senha     string
-	ConfSenha string
+	Nome      string `form:"nome"`
+	Email     string `form:"email"`
+	Senha     string `form:"senha"`
+	ConfSenha string `form:"confsenha"`
 }
 
 type UsuarioLoginDTO struct {
-	Email string
-	Senha string
+	Email string `form:"email"`
+	Senha string `form:"senha"`
 }

@@ -20,8 +20,10 @@ func GetUsuarioPorId(tx *sqlx.Tx, id int) (*modelos.UsuarioGetDTO, error) {
 
 func GetUsuarioComSenhaPorEmail(tx *sqlx.Tx, mail string) (*modelos.UsuarioSenhaGetDTO, error) {
 	u := modelos.UsuarioSenhaGetDTO{}
+
 	err := tx.Get(&u, "select usuario.idusuario, usuario.nome, usuario.email, usuario.senha from usuario where usuario.email = $1 limit 1", mail)
 	if err != nil {
+		println(err.Error())
 		return nil, err
 	}
 	return &u, nil

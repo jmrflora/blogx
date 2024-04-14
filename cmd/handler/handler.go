@@ -121,11 +121,21 @@ func (h *Handler) HandlePaginaUpload(c echo.Context) error {
 	return views.Renderizar(cmp, c)
 }
 
+func (h *Handler) HandlePaginaRegistro(c echo.Context) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	cmp := paginas.PaginaRegistroUsuario()
+
+	return views.Renderizar(cmp, c)
+}
+
 func (h *Handler) HandleLogin(c echo.Context) error {
 	u := modelos.UsuarioLoginDTO{}
 
 	if err := c.Bind(&u); err != nil {
+		println("aqui 1")
 		return views.Renderizar(partials.LoginComErro(""), c)
+
 	}
 
 	//adicionar validação
@@ -138,13 +148,16 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 
 	usuarioDb, err := db.GetUsuarioComSenhaPorEmail(tx, u.Email)
 	if err != nil {
+		println("aqui 2")
 		return views.Renderizar(partials.LoginComErro(""), c)
 	}
 	if ok := CheckPasswordHash(u.Senha, usuarioDb.Senha); !ok {
+		println("aqui 3")
 		return views.Renderizar(partials.LoginComErro(""), c)
 	}
 	sess, err := session.Get("session", c)
 	if err != nil {
+
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	sess.Options = &sessions.Options{
@@ -158,7 +171,7 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 	sess.Values["permissao"] = "normal"
 
 	sess.Save(c.Request(), c.Response())
-	return c.Redirect(http.StatusSeeOther, "/home")
+	return c.Redirect(http.StatusSeeOther, "/")
 }
 
 func (h *Handler) HandleRegistroUsuario(c echo.Context) error {
@@ -198,6 +211,22 @@ func (h *Handler) HandleRegistroUsuario(c echo.Context) error {
 	tx.Commit()
 
 	return echo.NewHTTPError(http.StatusOK)
+}
+
+func (h *Handler) HandleRegistroUsuarioConfSenha(c echo.Context) error {
+	u := modelos.UsuarioRegistroDTO{}
+
+	if err := c.Bind(&u); err != nil {
+		return views.Renderizar(partials.DivComSenhaDiferenteErro(), c)
+	}
+	if u.Senha != u.ConfSenha {
+		return views.Renderizar(partials.DivComSenhaDiferenteErro(), c)
+	}
+	println("aqui foi")
+	println(u.Nome)
+	println(u.Email)
+	println(u.Senha)
+	return views.Renderizar(partials.DivComSenha(u.ConfSenha), c)
 }
 
 func CheckPasswordHash(password, hash string) bool {
