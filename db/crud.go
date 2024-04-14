@@ -11,8 +11,19 @@ import (
 func GetUsuarioPorId(tx *sqlx.Tx, id int) (*modelos.UsuarioGetDTO, error) {
 	u := modelos.UsuarioGetDTO{}
 
-	err := tx.Get(&u, "select usuario.nome, usuario.email from usuario where usuario.idusuario = $1 limit 1", id)
+	err := tx.Get(&u, "select usuario.idusuario, usuario.nome, usuario.email from usuario where usuario.idusuario = $1 limit 1", id)
 	if err != nil {
+		return nil, err
+	}
+	return &u, nil
+}
+
+func GetUsuarioComSenhaPorEmail(tx *sqlx.Tx, mail string) (*modelos.UsuarioSenhaGetDTO, error) {
+	u := modelos.UsuarioSenhaGetDTO{}
+
+	err := tx.Get(&u, "select usuario.idusuario, usuario.nome, usuario.email, usuario.senha from usuario where usuario.email = $1 limit 1", mail)
+	if err != nil {
+		println(err.Error())
 		return nil, err
 	}
 	return &u, nil
@@ -92,6 +103,7 @@ func CategorizarArtigo(tx *sqlx.Tx, idArtigo string, idsCategoria []int) (sql.Re
 func CreateBlog(tx *sqlx.Tx, b *modelos.BlogCreateDTO) (sql.Result, error) {
 	_, err := CreateArtigo(tx, &b.ArtigoCreateDTO)
 	if err != nil {
+		println("aqui 2")
 		return nil, err
 	}
 	result, err := CategorizarArtigo(tx, b.Uuid, b.CategoriasIds)

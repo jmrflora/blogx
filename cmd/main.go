@@ -1,11 +1,11 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/google/uuid"
+	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmrflora/blogx/cmd/handler"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
@@ -21,25 +21,34 @@ func main() {
 
 	println(id.String())
 
-	db := sqlx.MustConnect("sqlite3", "../mydb.db")
+	db := sqlx.MustConnect("sqlite3", "mydb.db")
 
-	db.Ping()
+	h := handler.Handler{
+		Dbaccess: *db,
+	}
 
 	e := echo.New()
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	e.Static("/assets", "internal/assets")
 
-	e.POST("/upload", handler.HandleUpload)
-
 	e.GET("/", handler.HandleIndex)
+
 	e.GET("/paginalogin", handler.HandlePaginaLogin)
 
-	e.POST("/login", func(c echo.Context) error {
-		println("i tried")
-		return c.String(http.StatusOK, "there was an attempt")
-	})
+	e.GET("/paginaupload", h.HandlePaginaUpload)
+
+	e.GET("/paginaregistro", h.HandlePaginaRegistro)
+
+	e.POST("/registro", h.HandleRegistroUsuario)
+
+	e.POST("/registro/confsenha", h.HandleRegistroUsuarioConfSenha)
+
+	e.POST("/upload", h.HandleUpload)
+
+	e.POST("/login", h.HandleLogin)
 
 	e.Logger.Fatal(e.Start(":1323"))
 

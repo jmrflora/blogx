@@ -1,0 +1,58 @@
+package partials
+
+templ RegistroPartial(nome string, mail string){
+    
+    <form hx-post="/registro" hx-swap="outerHTML" hx-indicator="#indicador">
+        <label for="nome">nome:</label>
+        if nome == ""{
+            <input type="text" id="nome" name="nome" placeholder="nome"/>
+        } else {
+            <input type="text" id="nome" name="nome" placeholder={ nome }/>
+        }
+        <br />
+        <label for="email">email:</label>
+        if mail == ""{
+            <input type="text" id="email" name="email" placeholder="email"/>
+        } else {
+            <input type="text" id="email" name="email" placeholder={ mail }/>
+        }
+        <br />
+        <label for="senha">senha:</label>
+        <input type="password" name="senha" />
+        <br />
+        <div hx-target="this" hx-swap="outerHTML">
+            <label for="confsenha">confirme a senha:</label>
+            <input id="confsenha" hx-post="/registro/confsenha" type="password" name="confsenha"/>
+        </div>
+        <br />
+        <input type="submit" value="Submit" />
+        
+    </form>
+    { children... }
+    <img id="indicador" class="htmx-indicator" src="/assets/svgs/three-dots.svg" />
+    
+}
+
+templ DivComSenhaDiferenteErro(){
+    <div hx-target="this" hx-swap="outerHTML">
+        <label for="confsenha">confirme a senha:</label>
+        <input id="senha" hx-post="/registro/confsenha" type="password" name="confsenha" />
+        <div>
+           <span>Senhas diferentes</span>
+        </div>
+    </div>
+}
+templ DivComSenha(senha string){
+    <div hx-target="this" hx-swap="outerHTML">
+        <label for="confsenha">confirme a senha:</label>
+        <input id="senha" hx-post="/registro/confsenha" type="password" name="confsenha" value={ senha } />
+    </div>
+}
+
+templ RegstroComErroPartial(nome string, mail string){
+    @RegistroPartial(nome, mail){
+        <div>
+            <p>Erro</p>
+        </div>
+    }
+}
