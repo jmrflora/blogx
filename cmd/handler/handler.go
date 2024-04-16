@@ -222,10 +222,7 @@ func (h *Handler) HandleRegistroUsuarioConfSenha(c echo.Context) error {
 	if u.Senha != u.ConfSenha {
 		return views.Renderizar(partials.DivComSenhaDiferenteErro(), c)
 	}
-	println("aqui foi")
-	println(u.Nome)
-	println(u.Email)
-	println(u.Senha)
+
 	return views.Renderizar(partials.DivComSenha(u.ConfSenha), c)
 }
 

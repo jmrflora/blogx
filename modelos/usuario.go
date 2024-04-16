@@ -8,7 +8,7 @@ type Usuario struct {
 }
 
 type UsuarioGetDTO struct {
-	Id    int
+	Id    int `db:"idusuario"`
 	Nome  string
 	Email string
 }
