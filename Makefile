@@ -4,11 +4,14 @@ tidy:
 generate: tidy
 	templ generate
 
-run: generate
+tailwind : generate
+	npx tailwindcss -i internal/assets/css/input.css -o internal/assets/css/styles.css
+
+run: tailwind
 	go run cmd/main.go
 
-build: generate
+build: tailwind
 	go build -o bin/blogx cmd/main.go 
 
-buildtemp: generate
+buildtemp: tailwind
 	go build -o ./tmp/main cmd/main.go

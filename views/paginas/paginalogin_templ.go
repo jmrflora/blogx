@@ -32,7 +32,7 @@ func PaginaLogin() templ.Component {
 				templ_7745c5c3_Buffer = templ.GetBuffer()
 				defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
 			}
-			templ_7745c5c3_Err = partials.LoginPartial("").Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = partials.LoginHyper().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

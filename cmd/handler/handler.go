@@ -99,6 +99,7 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 }
 
 func HandleIndex(c echo.Context) error {
+
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 	cmp := paginas.Index()
 
@@ -106,6 +107,7 @@ func HandleIndex(c echo.Context) error {
 }
 
 func HandlePaginaLogin(c echo.Context) error {
+
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 
 	cmp := paginas.PaginaLogin()
