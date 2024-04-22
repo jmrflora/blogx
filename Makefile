@@ -5,7 +5,7 @@ generate: tidy
 	templ generate
 
 tailwind : generate
-	npx tailwindcss -i internal/assets/css/input.css -o internal/assets/css/input.css
+	npx tailwindcss -i internal/assets/css/input.css -o internal/assets/css/styles.css
 
 run: tailwind
 	go run cmd/main.go

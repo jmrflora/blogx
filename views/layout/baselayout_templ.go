@@ -23,7 +23,7 @@ func Base(titulo string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"pt-br\" data-theme=\"light\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Título da Página</title><link rel=\"stylesheet\" href=\"/assets/css/input.css\"><script src=\"/assets/js/htmx.min.js\"></script></head><body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"pt-br\" data-theme=\"light\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Título da Página</title><link rel=\"stylesheet\" href=\"/assets/css/styles.css\"><script src=\"/assets/js/htmx.min.js\"></script></head><body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -38,7 +38,7 @@ func Base(titulo string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(titulo)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/baselayout.templ`, Line: 18, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/baselayout.templ`, Line: 17, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -76,7 +76,7 @@ func Nav() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"navbar bg-base-100\"><a class=\"btn btn-ghost text-xl\">daisyUI</a></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"navbar bg-base-100\"><div class=\"flex-1\"><a class=\"btn btn-ghost text-xl\">daisyUI</a></div><div class=\"flex-none\"><ul class=\"menu menu-horizontal px-1\"><li><a>Link</a></li><li><details><summary>Parent</summary><ul class=\"p-2 bg-base-100 rounded-t-none\"><li><a>Link 1</a></li><li><a>Link 2</a></li></ul></details></li></ul></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
