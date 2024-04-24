@@ -8,13 +8,13 @@ templ Base(titulo string) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Título da Página</title>
         <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/assets/font/bootstrap-icons.min.css" />
         <script src="/assets/js/htmx.min.js"></script>
     </head>
     <body>
-        @Nav()
+        { children... }
         <h1>Olá, mundo! { titulo }</h1>
         <section id="corpo">
-            { children... }
         </section>
         <script src="/assets/js/bootstrap.bundle.min.js"></script>
     </body>
@@ -27,7 +27,6 @@ templ Nav() {
   <div class="container-fluid">
     <a class="navbar-brand" hx-boost="true" href="/">BLOGX</a>
     <div class="d-flex gap-3">
-      <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>
       <a hx-get="/paginalogin" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Login</a>
       <a hx-get="/paginaregistro" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Sign up</a>
     </div>
@@ -40,9 +39,8 @@ templ NavLogado() {
   <div class="container-fluid">
     <a class="navbar-brand" hx-boost="true" href="/">BLOGX</a>
     <div class="d-flex gap-3">
-      <i class="bi bi-person-circle"></i>
-      <a hx-get="/paginalogin" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Login</a>
-      <a hx-get="/paginaregistro" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Sign up</a>
+      <i class="bi bi-person fs-3" style="color: cornflowerblue;"></i>
+      Nome nome
     </div>
   </div>
 </nav>

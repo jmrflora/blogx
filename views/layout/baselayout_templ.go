@@ -23,11 +23,11 @@ func Base(titulo string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"pt-br\" data-theme=\"light\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Título da Página</title><link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\"><script src=\"/assets/js/htmx.min.js\"></script></head><body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"pt-br\" data-theme=\"light\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Título da Página</title><link rel=\"stylesheet\" href=\"/assets/css/bootstrap.min.css\"><link rel=\"stylesheet\" href=\"/assets/font/bootstrap-icons.min.css\"><script src=\"/assets/js/htmx.min.js\"></script></head><body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Nav().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = templ_7745c5c3_Var1.Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -38,21 +38,13 @@ func Base(titulo string) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(titulo)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/baselayout.templ`, Line: 15, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/layout/baselayout.templ`, Line: 16, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><section id=\"corpo\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templ_7745c5c3_Var1.Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</section><script src=\"/assets/js/bootstrap.bundle.min.js\"></script></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><section id=\"corpo\"></section><script src=\"/assets/js/bootstrap.bundle.min.js\"></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -76,7 +68,7 @@ func Nav() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar bg-body-tertiary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" hx-boost=\"true\" href=\"/\">BLOGX</a><div class=\"d-flex gap-3\"><i class=\"bi-alarm\" style=\"font-size: 2rem; color: cornflowerblue;\"></i> <a hx-get=\"/paginalogin\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Login</a> <a hx-get=\"/paginaregistro\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Sign up</a></div></div></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar bg-body-tertiary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" hx-boost=\"true\" href=\"/\">BLOGX</a><div class=\"d-flex gap-3\"><a hx-get=\"/paginalogin\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Login</a> <a hx-get=\"/paginaregistro\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Sign up</a></div></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -100,7 +92,7 @@ func NavLogado() templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar bg-body-tertiary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" hx-boost=\"true\" href=\"/\">BLOGX</a><div class=\"d-flex gap-3\"><i class=\"bi bi-person-circle\"></i> <a hx-get=\"/paginalogin\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Login</a> <a hx-get=\"/paginaregistro\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Sign up</a></div></div></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar bg-body-tertiary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" hx-boost=\"true\" href=\"/\">BLOGX</a><div class=\"d-flex gap-3\"><i class=\"bi bi-person fs-3\" style=\"color: cornflowerblue;\"></i> Nome nome</div></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
