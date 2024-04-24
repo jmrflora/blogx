@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/a-h/templ"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
@@ -99,11 +100,18 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 }
 
 func HandleIndex(c echo.Context) error {
-
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	println(sess.IsNew)
+	var cmp templ.Component
+	if sess.IsNew {
+		cmp = paginas.Index()
+	} else {
+		cmp = paginas.IndexLogado()
+	}
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-
-	cmp := paginas.Index()
-
 	return views.Renderizar(cmp, c)
 }
 
@@ -160,13 +168,13 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 	}
 	sess, err := session.Get("session", c)
 	if err != nil {
-
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	sess.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   86400 * 7,
+		MaxAge:   60,
 		HttpOnly: true,
+		Secure:   true,
 	}
 
 	sess.Values["email"] = usuarioDb.Email

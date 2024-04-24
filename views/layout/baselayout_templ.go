@@ -76,7 +76,31 @@ func Nav() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar bg-body-tertiary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" href=\"/\">BLOGX</a><div class=\"d-flex gap-3\"><a hx-get=\"/paginalogin\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Login</a> <a hx-get=\"/paginaregistro\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Sign up</a></div></div></nav>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar bg-body-tertiary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" hx-boost=\"true\" href=\"/\">BLOGX</a><div class=\"d-flex gap-3\"><i class=\"bi-alarm\" style=\"font-size: 2rem; color: cornflowerblue;\"></i> <a hx-get=\"/paginalogin\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Login</a> <a hx-get=\"/paginaregistro\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Sign up</a></div></div></nav>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func NavLogado() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var4 == nil {
+			templ_7745c5c3_Var4 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"navbar bg-body-tertiary\"><div class=\"container-fluid\"><a class=\"navbar-brand\" hx-boost=\"true\" href=\"/\">BLOGX</a><div class=\"d-flex gap-3\"><i class=\"bi bi-person-circle\"></i> <a hx-get=\"/paginalogin\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Login</a> <a hx-get=\"/paginaregistro\" hx-swap=\"innerHTML\" hx-target=\"#corpo\" class=\"btn btn-primary\" role=\"button\">Sign up</a></div></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

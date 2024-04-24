@@ -25,8 +25,22 @@ templ Base(titulo string) {
 templ Nav() {
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">BLOGX</a>
+    <a class="navbar-brand" hx-boost="true" href="/">BLOGX</a>
     <div class="d-flex gap-3">
+      <i class="bi-alarm" style="font-size: 2rem; color: cornflowerblue;"></i>
+      <a hx-get="/paginalogin" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Login</a>
+      <a hx-get="/paginaregistro" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Sign up</a>
+    </div>
+  </div>
+</nav>
+}
+
+templ NavLogado() {
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" hx-boost="true" href="/">BLOGX</a>
+    <div class="d-flex gap-3">
+      <i class="bi bi-person-circle"></i>
       <a hx-get="/paginalogin" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Login</a>
       <a hx-get="/paginaregistro" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Sign up</a>
     </div>
