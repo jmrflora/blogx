@@ -1,55 +1,57 @@
 package partials
 
-templ RegistroPartial(nome string, mail string){
-    
-    <form hx-post="/registro" hx-swap="outerHTML" hx-indicator="#indicador">
-        <label for="nome">nome:</label>
-        if nome == ""{
-            <input type="text" id="nome" name="nome" placeholder="nome"/>
-        } else {
-            <input type="text" id="nome" name="nome" placeholder={ nome }/>
-        }
-        <br />
-        <label for="email">email:</label>
-        if mail == ""{
-            <input type="text" id="email" name="email" placeholder="email"/>
-        } else {
-            <input type="text" id="email" name="email" placeholder={ mail }/>
-        }
-        <br />
-        <label for="senha">senha:</label>
-        <input type="password" name="senha" />
-        <br />
-        <div hx-target="this" hx-swap="outerHTML">
-            <label for="confsenha">confirme a senha:</label>
-            <input id="confsenha" hx-post="/registro/confsenha" type="password" name="confsenha"/>
+templ RegistroPartial(nome string, mail string) {
+<div hx-target="this">
+    <div class="d-flex justify-content-center">
+        <div class="w-25">
+            <form hx-post="/registro" hx-swap="outerHTML" hx-indicator="#indicador">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" name="nome" value={ nome }/>
+                    <div class="form-text">nome completo</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="email@mail.com" value={ mail } />
+                    <div class="form-text">Email para cadastro</div>
+                </div>
+                <div class="mb-3">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" name="senha" class="form-control" />
+                </div>
+                <div hx-target="this" hx-swap="outerHTML" class="mb-3">
+                    <label for="confsenha" class="form-label">confirme a senha:</label>
+                    <input class="form-control" id="confsenha" hx-post="/registro/confsenha" type="password" name="confsenha"/>
+                </div>
+                <input type="submit" class="btn btn-primary" value="Registrar" />
+            </form>
         </div>
-        <br />
-        <input type="submit" value="Submit" />
-        
-    </form>
-    { children... }
-    <img id="indicador" class="htmx-indicator" src="/assets/svgs/three-dots.svg" />
+        { children... }
+    </div>
+    <div id="indicador" class="text-center htmx-indicator mt-3">
+        <img src="/assets/svgs/three-dots.svg" />
+    </div>
+</div>
     
 }
-
-templ DivComSenhaDiferenteErro(){
-    <div hx-target="this" hx-swap="outerHTML">
-        <label for="confsenha">confirme a senha:</label>
-        <input id="senha" hx-post="/registro/confsenha" type="password" name="confsenha" />
-        <div>
-           <span>Senhas diferentes</span>
+//id="indicador" class="htmx-indicator"
+templ DivComSenhaDiferenteErro() {
+    <div hx-target="this" hx-swap="outerHTML" class="mb-3">
+        <label for="confsenha" class="form-label">confirme a senha:</label>
+        <input class="form-control is-invalid" id="senha" hx-post="/registro/confsenha" type="password" name="confsenha" />
+        <div class="invalid-feedback">
+            Senhas diferentes
         </div>
     </div>
 }
-templ DivComSenha(senha string){
-    <div hx-target="this" hx-swap="outerHTML">
-        <label for="confsenha">confirme a senha:</label>
-        <input id="senha" hx-post="/registro/confsenha" type="password" name="confsenha" value={ senha } />
+templ DivComSenha(senha string) {
+    <div hx-target="this" hx-swap="outerHTML" class="mb-3">
+        <label for="confsenha" class="form-label">confirme a senha:</label>
+        <input class="form-control" id="confsenha" hx-post="/registro/confsenha" type="password" name="confsenha" value={ senha } />
     </div>
 }
 
-templ RegstroComErroPartial(nome string, mail string){
+templ RegstroComErroPartial(nome string, mail string) {
     @RegistroPartial(nome, mail){
         <div>
             <p>Erro</p>

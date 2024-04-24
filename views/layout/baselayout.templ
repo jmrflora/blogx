@@ -7,42 +7,29 @@ templ Base(titulo string) {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Título da Página</title>
-        <link rel="stylesheet" href="/assets/css/styles.css"/>
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
         <script src="/assets/js/htmx.min.js"></script>
-
     </head>
     <body>
         @Nav()
-        <!-- Conteúdo da Página -->
         <h1>Olá, mundo! { titulo }</h1>
-        <section>
+        <section id="corpo">
             { children... }
         </section>
+        <script src="/assets/js/bootstrap.bundle.min.js"></script>
     </body>
     </html>
 
 }
 
 templ Nav() {
-<div class="navbar bg-base-100">
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl">daisyUI</a>
+<nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">BLOGX</a>
+    <div class="d-flex gap-3">
+      <a hx-get="/paginalogin" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Login</a>
+      <a hx-get="/paginaregistro" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Sign up</a>
+    </div>
   </div>
-  <div class="flex-none">
-    <ul class="menu menu-horizontal px-1">
-      <li><a>Link</a></li>
-      <li>
-        <details>
-          <summary>
-            Parent
-          </summary>
-          <ul class="p-2 bg-base-100 rounded-t-none">
-            <li><a>Link 1</a></li>
-            <li><a>Link 2</a></li>
-          </ul>
-        </details>
-      </li>
-    </ul>
-  </div>
-</div>
+</nav>
 }

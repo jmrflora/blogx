@@ -101,6 +101,7 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 func HandleIndex(c echo.Context) error {
 
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
 	cmp := paginas.Index()
 
 	return views.Renderizar(cmp, c)
@@ -110,7 +111,7 @@ func HandlePaginaLogin(c echo.Context) error {
 
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 
-	cmp := paginas.PaginaLogin()
+	cmp := partials.LoginHyper("", true)
 
 	return views.Renderizar(cmp, c)
 }
@@ -126,7 +127,7 @@ func (h *Handler) HandlePaginaUpload(c echo.Context) error {
 func (h *Handler) HandlePaginaRegistro(c echo.Context) error {
 	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 
-	cmp := paginas.PaginaRegistroUsuario()
+	cmp := partials.RegistroPartial("", "")
 
 	return views.Renderizar(cmp, c)
 }
@@ -136,7 +137,7 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 
 	if err := c.Bind(&u); err != nil {
 		println("aqui 1")
-		return views.Renderizar(partials.LoginComErro(""), c)
+		return views.Renderizar(partials.LoginHyper("", false), c)
 
 	}
 
@@ -151,11 +152,11 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 	usuarioDb, err := db.GetUsuarioComSenhaPorEmail(tx, u.Email)
 	if err != nil {
 		println("aqui 2")
-		return views.Renderizar(partials.LoginComErro(""), c)
+		return views.Renderizar(partials.LoginHyper(u.Email, false), c)
 	}
 	if ok := CheckPasswordHash(u.Senha, usuarioDb.Senha); !ok {
 		println("aqui 3")
-		return views.Renderizar(partials.LoginComErro(""), c)
+		return views.Renderizar(partials.LoginHyper(u.Email, false), c)
 	}
 	sess, err := session.Get("session", c)
 	if err != nil {
@@ -173,7 +174,8 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 	sess.Values["permissao"] = "normal"
 
 	sess.Save(c.Request(), c.Response())
-	return c.Redirect(http.StatusSeeOther, "/")
+	c.Response().Header().Add("HX-Location", "/")
+	return echo.NewHTTPError(http.StatusOK, "ok")
 }
 
 func (h *Handler) HandleRegistroUsuario(c echo.Context) error {
