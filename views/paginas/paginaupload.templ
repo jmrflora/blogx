@@ -2,9 +2,13 @@ package paginas
 
 import "github.com/jmrflora/blogx/views/layout"
 import "github.com/jmrflora/blogx/views/partials"
+import "github.com/jmrflora/blogx/modelos"
 
-templ PaginaUpload() {
+templ PaginaUpload(id int, categs []modelos.Categoria) {
     @layout.Base("upload"){
-        @partials.Uploadartigo()
+        @layout.Nav(){
+            @layout.FimNavDivLogado()
+        }
+        @partials.Uploadartigo(id, categs)
     }
 }

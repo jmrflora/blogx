@@ -7,7 +7,7 @@ templ Base(titulo string) {
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Título da Página</title>
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
         <link rel="stylesheet" href="/assets/font/bootstrap-icons.min.css" />
         <script src="/assets/js/htmx.min.js"></script>
     </head>
@@ -26,10 +26,7 @@ templ Nav() {
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" hx-boost="true" href="/">BLOGX</a>
-    <div class="d-flex gap-3">
-      <a hx-get="/paginalogin" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Login</a>
-      <a hx-get="/paginaregistro" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Sign up</a>
-    </div>
+    { children... }
   </div>
 </nav>
 }
@@ -38,10 +35,36 @@ templ NavLogado() {
 <nav class="navbar bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand" hx-boost="true" href="/">BLOGX</a>
-    <div class="d-flex gap-3">
-      <i class="bi bi-person fs-3" style="color: cornflowerblue;"></i>
-      Nome nome
+    <div class="d-flex gap-3 dropdown ps-5 me-5">
+      <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+        <i class="bi bi-person fs-3" style="color: cornflowerblue;"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-start">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+        <li><a class="dropdown-item" href="#">Another action</a></li>
+        <li><a class="dropdown-item" href="#">Something else </a></li>
+      </ul>
     </div>
   </div>
 </nav>
+}
+
+templ FimNavDivLogado() {
+<div class="d-flex gap-3 dropdown ps-5 me-5">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+    <i class="bi bi-person fs-3" style="color: cornflowerblue;"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-start">
+    <li><a class="dropdown-item" href="#">Action</a></li>
+    <li><a class="dropdown-item" href="#">Another action</a></li>
+    <li><a class="dropdown-item" href="#">Something else </a></li>
+  </ul>
+</div>
+}
+
+templ FimNavDiv() {
+<div class="d-flex gap-3">
+  <a hx-get="/paginalogin" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Login</a>
+  <a hx-get="/paginaregistro" hx-swap="innerHTML" hx-target="#corpo" class="btn btn-primary" role="button">Sign up</a>
+</div>
 }

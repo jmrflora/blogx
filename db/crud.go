@@ -80,6 +80,17 @@ func CreateCategoria(tx *sqlx.Tx, c modelos.CategoriaCreateDTO) (sql.Result, err
 	return result, nil
 }
 
+func GetCategorias(tx *sqlx.Tx) ([]modelos.Categoria, error) {
+	mc := []modelos.Categoria{}
+
+	err := tx.Select(&mc, "SELECT * FROM categoria")
+	if err != nil {
+		return nil, err
+	}
+	return mc, err
+
+}
+
 func CreateCategoriasDeArtigo(tx *sqlx.Tx, idArtigo string, idCategoria int) (sql.Result, error) {
 	result, err := tx.Exec("INSERT INTO categoriasdeartigo (idartigo, idcategoria) VALUES ($1, $2)", idArtigo, idCategoria)
 	if err != nil {

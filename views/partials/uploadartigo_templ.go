@@ -10,7 +10,13 @@ import "context"
 import "io"
 import "bytes"
 
-func Uploadartigo() templ.Component {
+import (
+	"github.com/jmrflora/blogx/modelos"
+
+	"strconv"
+)
+
+func Uploadartigo(id int, categorias []modelos.Categoria) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -23,7 +29,43 @@ func Uploadartigo() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-encoding=\"multipart/form-data\" hx-post=\"/upload\" _=\"on htmx:xhr:progress(loaded, total) set #progress.value to (loaded/total)*100\"><!-- ArtigoRegistroDTO fields -->Titulo: <input type=\"text\" name=\"Titulo\"><br>Subtitulo: <input type=\"text\" name=\"Subtitulo\"><br>IdAutor: <input type=\"number\" name=\"IdAutor\"><br><!-- BlogRegistroDTO specific field --><!-- Since CategoriasIds is a slice of integers, you can use multiple input fields with the same name -->CategoriasIds: <input type=\"number\" name=\"CategoriasIds\"><br>CategoriasIds: <input type=\"number\" name=\"CategoriasIds\"><br><input type=\"file\" name=\"file\"> <button>Upload</button> <progress id=\"progress\" value=\"0\" max=\"100\"></progress></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-flex justify-content-center\"><div class=\"w-25\"><form hx-encoding=\"multipart/form-data\" hx-post=\"/upload\" hx-target=\"#corpo\" hx-swap=\"innerHTML\"><div class=\"mb-3\"><label for=\"\" class=\"form-label\">Titulo</label> <input type=\"text\" class=\"form-control\" name=\"Titulo\"></div><!-- ArtigoRegistroDTO fields --><div class=\"mb-3\"><label for=\"\" class=\"form-label\">Subtitulo</label> <input type=\"text\" name=\"Subtitulo\" class=\"form-control\"></div><div class=\"mb-3\"><label for=\"\" class=\"form-label\">Categoria</label> <select class=\"form-select\" aria-label=\"Default select example\" name=\"categoria\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, categ := range categorias {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(categ.Id))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/partials/uploadartigo.templ`, Line: 27, Col: 62}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(categ.NomeCategoria)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/partials/uploadartigo.templ`, Line: 27, Col: 86}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><input type=\"file\" name=\"file\"> <button>Upload</button></form></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

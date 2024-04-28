@@ -1,8 +1,8 @@
 package modelos
 
 type Categoria struct {
-	Id            int
-	NomeCategoria string
+	Id            int    `db:"idcateg"`
+	NomeCategoria string `db:"nomecateg"`
 }
 
 type CategoriaCreateDTO struct {

@@ -26,12 +26,24 @@ type Handler struct {
 }
 
 func (h *Handler) HandleUpload(c echo.Context) error {
+
 	var blog modelos.BlogRegistroDTO
 
-	err := c.Bind(&blog)
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	err = echo.FormFieldBinder(c).
+		String("Titulo", &blog.Titulo).
+		String("Subtitulo", &blog.Subtitulo).
+		Ints("CategoriasIds", &blog.CategoriasIds).
+		BindError()
 	if err != nil {
 		return err
 	}
+
+	blog.IdAutor = sess.Values["id"].(int)
 
 	tx, err := h.Dbaccess.Beginx()
 	defer tx.Rollback()
@@ -107,6 +119,7 @@ func HandleIndex(c echo.Context) error {
 	println(sess.IsNew)
 	var cmp templ.Component
 	if sess.IsNew {
+
 		cmp = paginas.Index()
 	} else {
 		cmp = paginas.IndexLogado()
@@ -125,9 +138,35 @@ func HandlePaginaLogin(c echo.Context) error {
 }
 
 func (h *Handler) HandlePaginaUpload(c echo.Context) error {
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 
-	cmp := paginas.PaginaUpload()
+	//check for cookie
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	println(sess.IsNew)
+	var cmp templ.Component
+	if sess.IsNew {
+		// handle não ser logado
+		cmp = paginas.Index()
+	} else {
+		id := sess.Values["id"].(int)
+
+		tx, err := h.Dbaccess.Beginx()
+		if err != nil {
+			return err
+		}
+		categs, err := db.GetCategorias(tx)
+		if err != nil {
+			return err
+		}
+		if c.Request().Header.Get("HX-Request") == "" {
+
+		}
+		cmp = paginas.PaginaUpload(id, categs)
+	}
+
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
 
 	return views.Renderizar(cmp, c)
 }
@@ -172,17 +211,20 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 	}
 	sess.Options = &sessions.Options{
 		Path:     "/",
-		MaxAge:   60,
+		MaxAge:   24 * 60 * 60,
 		HttpOnly: true,
 		Secure:   true,
 	}
 
 	sess.Values["email"] = usuarioDb.Email
 	sess.Values["nome"] = usuarioDb.Nome
+	sess.Values["id"] = usuarioDb.Id
 	sess.Values["permissao"] = "normal"
 
 	sess.Save(c.Request(), c.Response())
-	c.Response().Header().Add("HX-Location", "/")
+	// precisa ser assim pro js do bootstrap não bugar
+	// c.Response().Header().Add("HX-Location", "/")
+	c.Response().Header().Add("HX-Refresh", "true")
 	return echo.NewHTTPError(http.StatusOK, "ok")
 }
 

@@ -1,22 +1,40 @@
 package partials
 
-templ Uploadartigo(){
-    <form hx-encoding="multipart/form-data" hx-post="/upload" 
-        _="on htmx:xhr:progress(loaded, total) set #progress.value to (loaded/total)*100">
-        <!-- ArtigoRegistroDTO fields -->
-        Titulo: <input type="text" name="Titulo" /><br/>
-        Subtitulo: <input type="text" name="Subtitulo" /><br/>
-        IdAutor: <input type="number" name="IdAutor" /><br/>
-        
-        <!-- BlogRegistroDTO specific field -->
-        <!-- Since CategoriasIds is a slice of integers, you can use multiple input fields with the same name -->
-        CategoriasIds: <input type="number" name="CategoriasIds" /><br/>
-        CategoriasIds: <input type="number" name="CategoriasIds" /><br/>
-        <input type='file' name='file' />
-        <button>
-            Upload
-        </button>
-        <progress id='progress' value='0' max='100'></progress>
-    </form>
+import (
+    "github.com/jmrflora/blogx/modelos"
+
+    "strconv"
+)
+    
+
+templ Uploadartigo(id int, categorias []modelos.Categoria) {
+<div class="d-flex justify-content-center">
+    <div class="w-25"> 
+        <form hx-encoding="multipart/form-data" hx-post="/upload" hx-target="#corpo" hx-swap="innerHTML">
+            <div class="mb-3">
+                <label for="" class="form-label">Titulo</label>
+                <input type="text" class="form-control" name="Titulo" />
+            </div>
+            <!-- ArtigoRegistroDTO fields -->
+            <div class="mb-3">
+                <label for="" class="form-label">Subtitulo</label>
+                <input type="text" name="Subtitulo" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Categoria</label>
+                <select class="form-select" aria-label="Default select example" name="categoria">
+                    for _, categ := range categorias{
+                        <option value={ strconv.Itoa(categ.Id) }>{ categ.NomeCategoria }</option>
+                    }
+
+                </select>
+            </div>
+            <input type='file' name='file' />
+            <button>
+                Upload
+            </button>
+        </form>
+    </div>
+</div>
 }
 
