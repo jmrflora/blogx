@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/rand"
+
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
@@ -26,9 +28,12 @@ func main() {
 	h := handler.Handler{
 		Dbaccess: *db,
 	}
+	key := make([]byte, 16)
+	rand.Read(key)
+	println(key)
 
 	e := echo.New()
-	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"), key)))
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 

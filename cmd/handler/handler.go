@@ -153,8 +153,10 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 
 	sess.Save(c.Request(), c.Response())
 	// precisa ser assim pro js do bootstrap não bugar
-	// c.Response().Header().Add("HX-Location", "/")
-	c.Response().Header().Add("HX-Refresh", "true")
+	// c.Response().Header().Add("HX-Push-Url", "/")
+	// c.Response().Header().Add("HX-Refresh", "true")
+	c.Response().Header().Add("HX-Redirect", "/")
+	// return c.Redirect(http.StatusSeeOther, "/")
 	return echo.NewHTTPError(http.StatusOK, "ok")
 }
 
