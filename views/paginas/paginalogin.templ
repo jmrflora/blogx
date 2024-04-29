@@ -4,8 +4,6 @@ import "github.com/jmrflora/blogx/views/layout"
 import "github.com/jmrflora/blogx/views/partials"
 
 templ PaginaLogin() {
-    @layout.Base("login"){
-        @partials.LoginHyper("", true)
+    @layout.BaseNaoLogado(partials.LoginHyper("", true)){
     }
-    
 }

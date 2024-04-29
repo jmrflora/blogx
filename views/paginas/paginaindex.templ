@@ -4,17 +4,11 @@ import "github.com/jmrflora/blogx/views/layout"
 
 
 templ Index() {
-    @layout.Base("bem vindo"){
-        @layout.Nav(){
-            @layout.FimNavDiv()
-        }
+    @layout.BaseNaoLogado(templ.NopComponent){
     }
 }
 
 templ IndexLogado() {
-    @layout.Base("bem vindo"){
-        @layout.Nav(){
-            @layout.FimNavDivLogado()
-        }
+    @layout.BaseLogado(templ.NopComponent){
     }
 }

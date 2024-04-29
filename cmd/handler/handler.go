@@ -7,14 +7,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/a-h/templ"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 	"github.com/jmrflora/blogx/db"
 	"github.com/jmrflora/blogx/modelos"
 	"github.com/jmrflora/blogx/views"
-	"github.com/jmrflora/blogx/views/paginas"
 	"github.com/jmrflora/blogx/views/partials"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -109,74 +107,6 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 
 	tx.Commit()
 	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully</p>", file.Filename))
-}
-
-func HandleIndex(c echo.Context) error {
-	sess, err := session.Get("session", c)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-	println(sess.IsNew)
-	var cmp templ.Component
-	if sess.IsNew {
-
-		cmp = paginas.Index()
-	} else {
-		cmp = paginas.IndexLogado()
-	}
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-	return views.Renderizar(cmp, c)
-}
-
-func HandlePaginaLogin(c echo.Context) error {
-
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-
-	cmp := partials.LoginHyper("", true)
-
-	return views.Renderizar(cmp, c)
-}
-
-func (h *Handler) HandlePaginaUpload(c echo.Context) error {
-
-	//check for cookie
-	sess, err := session.Get("session", c)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
-	println(sess.IsNew)
-	var cmp templ.Component
-	if sess.IsNew {
-		// handle não ser logado
-		cmp = paginas.Index()
-	} else {
-		id := sess.Values["id"].(int)
-
-		tx, err := h.Dbaccess.Beginx()
-		if err != nil {
-			return err
-		}
-		categs, err := db.GetCategorias(tx)
-		if err != nil {
-			return err
-		}
-		if c.Request().Header.Get("HX-Request") == "" {
-			cmp = paginas.PaginaUpload(id, categs)
-		}
-		cmp = paginas.PaginaUpload(id, categs)
-	}
-
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-
-	return views.Renderizar(cmp, c)
-}
-
-func (h *Handler) HandlePaginaRegistro(c echo.Context) error {
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-
-	cmp := partials.RegistroPartial("", "")
-
-	return views.Renderizar(cmp, c)
 }
 
 func (h *Handler) HandleLogin(c echo.Context) error {

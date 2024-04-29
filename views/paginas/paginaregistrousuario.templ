@@ -4,7 +4,6 @@ import "github.com/jmrflora/blogx/views/layout"
 import "github.com/jmrflora/blogx/views/partials"
 
 templ PaginaRegistroUsuario() {
-    @layout.Base("registro"){
-        @partials.RegistroPartial("", "")
+    @layout.BaseNaoLogado(partials.RegistroPartial("", "")){
     }
 }

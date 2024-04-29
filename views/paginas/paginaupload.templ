@@ -5,10 +5,6 @@ import "github.com/jmrflora/blogx/views/partials"
 import "github.com/jmrflora/blogx/modelos"
 
 templ PaginaUpload(id int, categs []modelos.Categoria) {
-    @layout.Base("upload"){
-        @layout.Nav(){
-            @layout.FimNavDivLogado()
-        }
-        @partials.Uploadartigo(id, categs)
+    @layout.BaseLogado(partials.Uploadartigo(id, categs)){
     }
 }
