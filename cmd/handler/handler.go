@@ -161,7 +161,7 @@ func (h *Handler) HandlePaginaUpload(c echo.Context) error {
 			return err
 		}
 		if c.Request().Header.Get("HX-Request") == "" {
-
+			cmp = paginas.PaginaUpload(id, categs)
 		}
 		cmp = paginas.PaginaUpload(id, categs)
 	}
