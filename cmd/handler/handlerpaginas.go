@@ -15,6 +15,7 @@ import (
 func HandleIndex(c echo.Context) error {
 	sess, err := session.Get("session", c)
 	if err != nil {
+		println("aquiiii")
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	// println(sess.IsNew)

@@ -143,7 +143,7 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 		Path:     "/",
 		MaxAge:   24 * 60 * 60,
 		HttpOnly: true,
-		Secure:   true,
+		Secure:   false,
 	}
 
 	sess.Values["email"] = usuarioDb.Email
@@ -155,8 +155,8 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 	// precisa ser assim pro js do bootstrap não bugar
 	// c.Response().Header().Add("HX-Push-Url", "/")
 	// c.Response().Header().Add("HX-Refresh", "true")
-	c.Response().Header().Add("HX-Redirect", "/")
 	// return c.Redirect(http.StatusSeeOther, "/")
+	c.Response().Header().Add("HX-Redirect", "/")
 	return echo.NewHTTPError(http.StatusOK, "ok")
 }
 

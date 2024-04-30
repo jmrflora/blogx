@@ -33,9 +33,10 @@ func main() {
 	println(key)
 
 	e := echo.New()
-	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"), key)))
+	e.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"), nil)))
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Use()
 
 	e.Static("/assets", "internal/assets")
 
@@ -58,3 +59,16 @@ func main() {
 	e.Logger.Fatal(e.Start(":1323"))
 
 }
+
+// func CookieAuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+// 	return func(c echo.Context) error {
+// 		fmt.Println("SomeMiddleware")
+
+// 		sess, err := session.Get("session", c)
+// 		if err != nil {
+// 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+// 		}
+
+// 		return next(c)
+// 	}
+// }
