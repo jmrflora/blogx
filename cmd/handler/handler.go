@@ -24,14 +24,13 @@ type Handler struct {
 }
 
 func (h *Handler) HandleUpload(c echo.Context) error {
-
 	var blog modelos.BlogRegistroDTO
 
 	sess, err := session.Get("session", c)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-
+	// criar sub handler para fazer parse parcial do md para descobrir titulo e Subtitulo
 	err = echo.FormFieldBinder(c).
 		String("Titulo", &blog.Titulo).
 		String("Subtitulo", &blog.Subtitulo).
@@ -55,7 +54,6 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 			Titulo:    blog.Titulo,
 			Subtitulo: blog.Subtitulo,
 			IdAutor:   blog.IdAutor,
-			Estrelas:  0,
 		},
 		CategoriasIds: blog.CategoriasIds,
 	}
@@ -118,7 +116,7 @@ func (h *Handler) HandleLogin(c echo.Context) error {
 
 	}
 
-	//adicionar validação
+	// adicionar validação
 
 	tx, err := h.Dbaccess.Beginx()
 	defer tx.Rollback()
@@ -167,7 +165,7 @@ func (h *Handler) HandleRegistroUsuario(c echo.Context) error {
 		return echo.ErrBadRequest
 	}
 
-	//adicionar validação
+	// adicionar validação
 
 	if u.Senha != u.ConfSenha {
 		return echo.ErrBadRequest

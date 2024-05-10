@@ -39,7 +39,6 @@ func TestCreateUsuario(t *testing.T) {
 	_, err = CreateUsuario(tx, &u)
 
 	assert.NoError(t, err)
-
 }
 
 func TestGetArtigo(t *testing.T) {
@@ -54,7 +53,6 @@ func TestGetArtigo(t *testing.T) {
 
 	assert.NoError(t, err)
 	// println(a.Titulo)
-
 }
 
 func TestCreateArtigo(t *testing.T) {
@@ -70,13 +68,11 @@ func TestCreateArtigo(t *testing.T) {
 		Titulo:    "aaaaaaa",
 		Subtitulo: "aaaaaaaaas",
 		IdAutor:   1,
-		Estrelas:  0,
 	}
 
 	_, err = CreateArtigo(tx, &a)
 
 	assert.NoError(t, err)
-
 }
 
 func TestCreateCategoria(t *testing.T) {
@@ -94,7 +90,6 @@ func TestCreateCategoria(t *testing.T) {
 	_, err = CreateCategoria(tx, c)
 
 	assert.NoError(t, err)
-
 }
 
 func TestCreateCategoriasDeArtigo(t *testing.T) {
@@ -121,7 +116,6 @@ func TestCategorizarArtigo(t *testing.T) {
 	_, err = CategorizarArtigo(tx, "63f7e639-2d32-46e7-94a4-328217d81487", []int{1})
 
 	assert.NoError(t, err)
-
 }
 
 func TestCreateBlog(t *testing.T) {
@@ -138,7 +132,6 @@ func TestCreateBlog(t *testing.T) {
 		Titulo:    "aaaaaaa",
 		Subtitulo: "aaaaaaaaas",
 		IdAutor:   1,
-		Estrelas:  0,
 	}
 
 	b := modelos.BlogCreateDTO{

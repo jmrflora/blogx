@@ -45,17 +45,14 @@ func GetArtigoPorId(tx *sqlx.Tx, id string) (*modelos.ArtigoGetDTO, error) {
 	a := modelos.ArtigoGetDTO{}
 
 	err := tx.Get(&a, "SELECT artigo.uuid, artigo.titulo, artigo.subtitulo, artigo.idautor, artigo.estrelas from artigo where artigo.uuid = $1 limit 1", id)
-
 	if err != nil {
 		return nil, err
 	}
 	return &a, nil
-
 }
 
 func CreateArtigo(tx *sqlx.Tx, a *modelos.ArtigoCreateDTO) (sql.Result, error) {
-	nstmt, err := tx.PrepareNamed("INSERT INTO artigo (uuid, titulo, subtitulo, idautor, estrelas) values (:uuid, :titulo, :subtitulo, :idautor, :estrelas)")
-
+	nstmt, err := tx.PrepareNamed("INSERT INTO artigo (uuid, titulo, subtitulo, idautor) values (:uuid, :titulo, :subtitulo, :idautor, 0)")
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +62,6 @@ func CreateArtigo(tx *sqlx.Tx, a *modelos.ArtigoCreateDTO) (sql.Result, error) {
 		return nil, err
 	}
 	return result, nil
-
 }
 
 func CreateCategoria(tx *sqlx.Tx, c modelos.CategoriaCreateDTO) (sql.Result, error) {
@@ -88,7 +84,6 @@ func GetCategorias(tx *sqlx.Tx) ([]modelos.Categoria, error) {
 		return nil, err
 	}
 	return mc, err
-
 }
 
 func CreateCategoriasDeArtigo(tx *sqlx.Tx, idArtigo string, idCategoria int) (sql.Result, error) {

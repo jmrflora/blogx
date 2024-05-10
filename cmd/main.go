@@ -44,7 +44,7 @@ func main() {
 
 	e.GET("/paginalogin", handler.HandlePaginaLogin)
 
-	e.GET("/paginaupload", h.HandlePaginaUpload)
+	e.POST("/login", h.HandleLogin)
 
 	e.GET("/paginaregistro", h.HandlePaginaRegistro)
 
@@ -52,23 +52,27 @@ func main() {
 
 	e.POST("/registro/confsenha", h.HandleRegistroUsuarioConfSenha)
 
-	e.POST("/upload", h.HandleUpload)
+	p := e.Group("", CookieAuthMiddleware)
 
-	e.POST("/login", h.HandleLogin)
+	p.POST("/upload", h.HandleUpload)
+
+	p.GET("/paginaupload", h.HandlePaginaUpload)
 
 	e.Logger.Fatal(e.Start(":1323"))
-
 }
 
-// func CookieAuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
-// 	return func(c echo.Context) error {
-// 		fmt.Println("SomeMiddleware")
-
-// 		sess, err := session.Get("session", c)
-// 		if err != nil {
-// 			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-// 		}
-
-// 		return next(c)
-// 	}
-// }
+func CookieAuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		sess, err := session.Get("session", c)
+		if err != nil {
+			return echo.ErrUnauthorized
+		}
+		if sess.IsNew {
+			return echo.ErrUnauthorized
+		}
+		if sess.Values["permissao"].(string) != "normal" {
+			return echo.ErrUnauthorized
+		}
+		return next(c)
+	}
+}

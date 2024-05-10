@@ -21,7 +21,6 @@ type ArtigoCreateDTO struct {
 	Titulo    string
 	Subtitulo string
 	IdAutor   int
-	Estrelas  int
 }
 
 type ArtigoRegistroDTO struct {

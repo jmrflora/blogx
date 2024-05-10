@@ -19,6 +19,7 @@ templ Head() {
       <title>Título da Página</title>
       <link rel="stylesheet" href="/assets/css/bootstrap.css"/>
       <link rel="stylesheet" href="/assets/font/bootstrap-icons.min.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css" />
       <script src="/assets/js/htmx.min.js"></script>
   </head>
 }
@@ -33,7 +34,9 @@ templ Base(titulo string, navbar templ.Component) {
       <section id="corpo">
         { children... }
       </section>
-      <script src="/assets/js/bootstrap.bundle.min.js"></script>
+      <section id="footer">
+        <script src="/assets/js/bootstrap.bundle.min.js"></script>
+      </section>
   </body>
   </html>
 }

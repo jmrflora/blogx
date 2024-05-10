@@ -2,39 +2,20 @@ package partials
 
 import (
     "github.com/jmrflora/blogx/modelos"
-
-    "strconv"
 )
     
 
 templ Uploadartigo(id int, categorias []modelos.Categoria) {
 <div class="d-flex justify-content-center">
-    <div class="w-25"> 
+    <div class="w-75"> 
         <form hx-encoding="multipart/form-data" hx-post="/upload" hx-target="#corpo" hx-swap="innerHTML">
-            <div class="mb-3">
-                <label for="" class="form-label">Titulo</label>
-                <input type="text" class="form-control" name="Titulo" />
-            </div>
-            <!-- ArtigoRegistroDTO fields -->
-            <div class="mb-3">
-                <label for="" class="form-label">Subtitulo</label>
-                <input type="text" name="Subtitulo" class="form-control" />
-            </div>
-            <div class="mb-3">
-                <label for="" class="form-label">Categoria</label>
-                <select class="form-select" aria-label="Default select example" name="categoria">
-                    for _, categ := range categorias{
-                        <option value={ strconv.Itoa(categ.Id) }>{ categ.NomeCategoria }</option>
-                    }
-
-                </select>
-            </div>
-            <input type='file' name='file' />
-            <button>
-                Upload
-            </button>
+            <textarea></textarea>
         </form>
     </div>
 </div>
+<script id="footer" hx-swap-oob="beforeend" src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+var simplemde = new SimpleMDE();
+</script>
 }
 

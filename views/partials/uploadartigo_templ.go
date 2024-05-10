@@ -12,8 +12,6 @@ import "bytes"
 
 import (
 	"github.com/jmrflora/blogx/modelos"
-
-	"strconv"
 )
 
 func Uploadartigo(id int, categorias []modelos.Categoria) templ.Component {
@@ -29,43 +27,7 @@ func Uploadartigo(id int, categorias []modelos.Categoria) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-flex justify-content-center\"><div class=\"w-25\"><form hx-encoding=\"multipart/form-data\" hx-post=\"/upload\" hx-target=\"#corpo\" hx-swap=\"innerHTML\"><div class=\"mb-3\"><label for=\"\" class=\"form-label\">Titulo</label> <input type=\"text\" class=\"form-control\" name=\"Titulo\"></div><!-- ArtigoRegistroDTO fields --><div class=\"mb-3\"><label for=\"\" class=\"form-label\">Subtitulo</label> <input type=\"text\" name=\"Subtitulo\" class=\"form-control\"></div><div class=\"mb-3\"><label for=\"\" class=\"form-label\">Categoria</label> <select class=\"form-select\" aria-label=\"Default select example\" name=\"categoria\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		for _, categ := range categorias {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(categ.Id))
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/partials/uploadartigo.templ`, Line: 27, Col: 62}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(categ.NomeCategoria)
-			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/partials/uploadartigo.templ`, Line: 27, Col: 86}
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><input type=\"file\" name=\"file\"> <button>Upload</button></form></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-flex justify-content-center\"><div class=\"w-75\"><form hx-encoding=\"multipart/form-data\" hx-post=\"/upload\" hx-target=\"#corpo\" hx-swap=\"innerHTML\"><textarea></textarea></form></div></div><script id=\"footer\" hx-swap-oob=\"beforeend\" src=\"https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js\"></script><script>\nvar simplemde = new SimpleMDE();\n</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
