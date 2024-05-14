@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
@@ -115,6 +116,16 @@ func (h *Handler) HandleUploadParse(c echo.Context) error {
 		return echo.ErrBadRequest
 	}
 	println(texto)
+
+	regex, err := regexp.Compile(`^#\s*[^#\r\n]+\\r\\n##\s+.+`)
+	if err != nil {
+		return echo.ErrInternalServerError
+	}
+
+	if !regex.MatchString(texto) {
+		return echo.NewHTTPError(http.StatusBadRequest, "coloque um titulo e um sub")
+	}
+
 	return echo.NewHTTPError(http.StatusOK, texto)
 }
 

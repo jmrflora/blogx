@@ -1,21 +1,38 @@
 package partials
 
 import (
-    "github.com/jmrflora/blogx/modelos"
+	"github.com/jmrflora/blogx/modelos"
 )
-    
 
 templ Uploadartigo(id int, categorias []modelos.Categoria) {
-<div class="d-flex justify-content-center">
-    <div class="w-75"> 
-        <form hx-encoding="multipart/form-data" hx-post="/upload" hx-target="#corpo" hx-swap="innerHTML">
-            <textarea></textarea>
-        </form>
-    </div>
-</div>
-<script id="footer" hx-swap-oob="beforeend" src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<script>
-var simplemde = new SimpleMDE();
-</script>
-}
+	<div class="d-flex justify-content-center">
+		<div class="w-75">
+			<form
+				hx-encoding="multipart/form-data"
+				hx-post="/upload"
+				hx-target="#corpo"
+				hx-swap="innerHTML"
+				_="on change call changeTextareaValue() then js htmx.trigger('#txt', 'myevent') end"
+			>
+				<textarea
+					name="texto"
+					id="txt"
+					hx-post="/upload/parse"
+					hx-trigger="myevent"
+				></textarea>
+			</form>
+		</div>
+		<button _="on click js console.log(simplemde.value()); console.log('aaaaaa') end ">
+			Click me.
+		</button>
+	</div>
+	<script id="footer" hx-swap-oob="beforeend" src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+	<script>
+    var simplemde = new SimpleMDE();
 
+    function changeTextareaValue() {
+      var textarea = document.getElementById('txt');
+      textarea.value = simplemde.value();
+    }
+  </script>
+}
