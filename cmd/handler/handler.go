@@ -107,6 +107,17 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully</p>", file.Filename))
 }
 
+func (h *Handler) HandleUploadParse(c echo.Context) error {
+	var texto string
+	err := echo.FormFieldBinder(c).
+		String("texto", &texto).BindError()
+	if err != nil {
+		return echo.ErrBadRequest
+	}
+	println(texto)
+	return echo.NewHTTPError(http.StatusOK, texto)
+}
+
 func (h *Handler) HandleLogin(c echo.Context) error {
 	u := modelos.UsuarioLoginDTO{}
 

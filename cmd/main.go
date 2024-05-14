@@ -56,6 +56,8 @@ func main() {
 
 	p.POST("/upload", h.HandleUpload)
 
+	p.POST("/upload/parse", h.HandleUploadParse)
+
 	p.GET("/paginaupload", h.HandlePaginaUpload)
 
 	e.Logger.Fatal(e.Start(":1323"))
