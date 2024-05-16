@@ -17,23 +17,22 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
 				<textarea
 					name="texto"
 					id="txt"
-					hx-post="/upload/parse"
-					hx-trigger="myevent"
 				></textarea>
+				<div class="input-group">
+					<button type="button" class="btn dropdown-toggle w-100" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+						categorias
+					</button>
+					<ul class="dropdown-menu w-100">
+						for _, categoria := range categorias {
+							<li>
+								<input class="form-check-input" type="checkbox" value={ strconv.Itoa(categoria.Id) } name="CategoriasIds"/>
+								<label clas="form-check-label">{ categoria.NomeCategoria }</label>
+							</li>
+						}
+					</ul>
+				</div>
+				<input class="btn btn-primary" type="submit" value="Submit"/>
 			</form>
-			<div class="input-group">
-				<button type="button" class="btn dropdown-toggle w-100" data-bs-auto-close="outside" data-bs-toggle="dropdown">
-					categorias
-				</button>
-				<ul class="dropdown-menu w-100">
-					for _, categoria := range categorias {
-						<li>
-							<input class="form-check-input" type="checkbox" value={ strconv.Itoa(categoria.Id) }/>
-							<label clas="form-check-label">{ categoria.NomeCategoria }</label>
-						</li>
-					}
-				</ul>
-			</div>
 		</div>
 		<button _="on click call changeTextareaValue() then js htmx.trigger('#txt', 'myevent') end">
 			Click me.
@@ -42,6 +41,11 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
 	<script id="footer" hx-swap-oob="beforeend" src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 	<script>
     var simplemde = new SimpleMDE();
+
+    htmx.on("htmx:beforeSend", function(evt){
+      var textarea = document.getElementById('txt');
+      textarea.value = simplemde.value();
+    })
 
     function changeTextareaValue() {
       console.log("to aqui")

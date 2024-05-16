@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
@@ -31,7 +32,10 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
-	// criar sub handler para fazer parse parcial do md para descobrir titulo e Subtitulo
+	// criar sub handler para fazer arse parcial do md para descobrir titulo e Subtitulo
+
+	Parse(c)
+
 	err = echo.FormFieldBinder(c).
 		String("Titulo", &blog.Titulo).
 		String("Subtitulo", &blog.Subtitulo).
@@ -240,4 +244,39 @@ func CheckPasswordHash(password, hash string) bool {
 func HashPassword(password string) (string, error) {
 	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	return string(bytes), err
+}
+
+func Parse(c echo.Context) (error, string, string) {
+	var texto string
+	err := echo.FormFieldBinder(c).
+		String("texto", &texto).BindError()
+	if err != nil {
+		return err, "", ""
+	}
+	fmt.Printf("%q\n", texto)
+
+	regex, err := regexp.Compile(`^# .*(?:\r?\n){1,2}## .*`)
+	if err != nil {
+		return err, "", ""
+	}
+
+	if !regex.MatchString(texto) {
+		return err, "", ""
+	}
+
+	fds := regex.FindString(texto)
+	println(fds)
+	linhas := splitLines(fds)
+
+	fmt.Printf("linhas[0]: %v\n", linhas[0])
+	fmt.Printf("linhas[1]: %v\n", linhas[1])
+
+	return nil, "", ""
+}
+
+func splitLines(s string) []string {
+	// Split the string into lines using FieldsFunc
+	return strings.FieldsFunc(s, func(r rune) bool {
+		return r == '\n' || r == '\r'
+	})
 }
