@@ -2,6 +2,7 @@ package partials
 
 import (
 	"github.com/jmrflora/blogx/modelos"
+	"strconv"
 )
 
 templ Uploadartigo(id int, categorias []modelos.Categoria) {
@@ -20,6 +21,19 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
 					hx-trigger="myevent"
 				></textarea>
 			</form>
+			<div class="input-group">
+				<button type="button" class="btn dropdown-toggle w-100" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+					categorias
+				</button>
+				<ul class="dropdown-menu w-100">
+					for _, categoria := range categorias {
+						<li>
+							<input class="form-check-input" type="checkbox" value={ strconv.Itoa(categoria.Id) }/>
+							<label clas="form-check-label">{ categoria.NomeCategoria }</label>
+						</li>
+					}
+				</ul>
+			</div>
 		</div>
 		<button _="on click call changeTextareaValue() then js htmx.trigger('#txt', 'myevent') end">
 			Click me.

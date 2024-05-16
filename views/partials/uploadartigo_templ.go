@@ -12,6 +12,7 @@ import "bytes"
 
 import (
 	"github.com/jmrflora/blogx/modelos"
+	"strconv"
 )
 
 func Uploadartigo(id int, categorias []modelos.Categoria) templ.Component {
@@ -27,7 +28,43 @@ func Uploadartigo(id int, categorias []modelos.Categoria) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-flex justify-content-center\"><div class=\"w-75\"><form hx-encoding=\"multipart/form-data\" hx-post=\"/upload\" hx-target=\"#corpo\" hx-swap=\"innerHTML\"><textarea name=\"texto\" id=\"txt\" hx-post=\"/upload/parse\" hx-trigger=\"myevent\"></textarea></form></div><button _=\"on click call changeTextareaValue() then js htmx.trigger(&#39;#txt&#39;, &#39;myevent&#39;) end\">Click me.</button></div><script id=\"footer\" hx-swap-oob=\"beforeend\" src=\"https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js\"></script><script>\n    var simplemde = new SimpleMDE();\n\n    function changeTextareaValue() {\n      console.log(\"to aqui\")\n      var textarea = document.getElementById('txt');\n      textarea.value = simplemde.value();\n    }\n  </script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-flex justify-content-center\"><div class=\"w-75\"><form hx-encoding=\"multipart/form-data\" hx-post=\"/upload\" hx-target=\"#corpo\" hx-swap=\"innerHTML\"><textarea name=\"texto\" id=\"txt\" hx-post=\"/upload/parse\" hx-trigger=\"myevent\"></textarea></form><div class=\"input-group\"><button type=\"button\" class=\"btn dropdown-toggle w-100\" data-bs-auto-close=\"outside\" data-bs-toggle=\"dropdown\">categorias</button><ul class=\"dropdown-menu w-100\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, categoria := range categorias {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li><input class=\"form-check-input\" type=\"checkbox\" value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(categoria.Id))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/partials/uploadartigo.templ`, Line: 31, Col: 89}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"> <label clas=\"form-check-label\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(categoria.NomeCategoria)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/partials/uploadartigo.templ`, Line: 32, Col: 63}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label></li>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></div></div><button _=\"on click call changeTextareaValue() then js htmx.trigger(&#39;#txt&#39;, &#39;myevent&#39;) end\">Click me.</button></div><script id=\"footer\" hx-swap-oob=\"beforeend\" src=\"https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js\"></script><script>\n    var simplemde = new SimpleMDE();\n\n    function changeTextareaValue() {\n      console.log(\"to aqui\")\n      var textarea = document.getElementById('txt');\n      textarea.value = simplemde.value();\n    }\n  </script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
