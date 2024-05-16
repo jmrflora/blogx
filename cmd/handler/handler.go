@@ -115,9 +115,9 @@ func (h *Handler) HandleUploadParse(c echo.Context) error {
 	if err != nil {
 		return echo.ErrBadRequest
 	}
-	println(texto)
+	fmt.Printf("%q\n", texto)
 
-	regex, err := regexp.Compile(`^#\s*[^#\r\n]+\\r\\n##\s+.+`)
+	regex, err := regexp.Compile(`^# .*(?:\r?\n){1,2}## .*`)
 	if err != nil {
 		return echo.ErrInternalServerError
 	}

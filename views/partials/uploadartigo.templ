@@ -12,7 +12,6 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
 				hx-post="/upload"
 				hx-target="#corpo"
 				hx-swap="innerHTML"
-				_="on change call changeTextareaValue() then js htmx.trigger('#txt', 'myevent') end"
 			>
 				<textarea
 					name="texto"
@@ -22,7 +21,7 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
 				></textarea>
 			</form>
 		</div>
-		<button _="on click js console.log(simplemde.value()); console.log('aaaaaa') end ">
+		<button _="on click call changeTextareaValue() then js htmx.trigger('#txt', 'myevent') end">
 			Click me.
 		</button>
 	</div>
@@ -31,6 +30,7 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
     var simplemde = new SimpleMDE();
 
     function changeTextareaValue() {
+      console.log("to aqui")
       var textarea = document.getElementById('txt');
       textarea.value = simplemde.value();
     }
