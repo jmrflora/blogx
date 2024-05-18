@@ -1,12 +1,13 @@
 package handler
 
 import (
+	"errors"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/google/uuid"
@@ -33,12 +34,23 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 	// criar sub handler para fazer arse parcial do md para descobrir titulo e Subtitulo
+	var texto string
+	err = echo.FormFieldBinder(c).
+		String("texto", &texto).BindError()
+	if err != nil {
+		return echo.ErrBadRequest
+	}
+	fmt.Printf("%q\n", texto)
 
-	Parse(c)
+	err, titulo, sub := Parse(texto)
+	if err != nil {
+		return echo.ErrBadRequest
+	}
+
+	blog.Titulo = titulo
+	blog.Subtitulo = sub
 
 	err = echo.FormFieldBinder(c).
-		String("Titulo", &blog.Titulo).
-		String("Subtitulo", &blog.Subtitulo).
 		Ints("CategoriasIds", &blog.CategoriasIds).
 		BindError()
 	if err != nil {
@@ -63,6 +75,8 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 		CategoriasIds: blog.CategoriasIds,
 	}
 
+	fmt.Printf("b: %v\n", b)
+
 	_, err = db.CreateBlog(tx, &b)
 	if err != nil {
 		println("aquiiiiiiii")
@@ -74,20 +88,12 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	//-----------
 
 	// Source
-	file, err := c.FormFile("file")
-	if err != nil {
-		return err
-	}
-	src, err := file.Open()
-	if err != nil {
-		return err
-	}
-	defer src.Close()
 
 	// Destination
 
 	// Destination directory
-	uploadDir := "internal/assets/markdowns/usuariologado"
+
+	uploadDir := "internal/assets/markdowns/" + strconv.Itoa(sess.Values["id"].(int))
 
 	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
 		println("ola")
@@ -104,12 +110,15 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	defer dst.Close()
 
 	// Copy
-	if _, err = io.Copy(dst, src); err != nil {
-		return err
+
+	_, err = dst.WriteString(texto)
+	if err != nil {
+		println(err.Error())
+		return echo.ErrInternalServerError
 	}
 
 	tx.Commit()
-	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully</p>", file.Filename))
+	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully</p>", dst.Name()))
 }
 
 func (h *Handler) HandleUploadParse(c echo.Context) error {
@@ -246,22 +255,11 @@ func HashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func Parse(c echo.Context) (error, string, string) {
-	var texto string
-	err := echo.FormFieldBinder(c).
-		String("texto", &texto).BindError()
-	if err != nil {
-		return err, "", ""
-	}
-	fmt.Printf("%q\n", texto)
-
-	regex, err := regexp.Compile(`^# .*(?:\r?\n){1,2}## .*`)
-	if err != nil {
-		return err, "", ""
-	}
+func Parse(texto string) (error, string, string) {
+	regex := regexp.MustCompile(`^# .*(?:\r?\n){1,2}## .*`)
 
 	if !regex.MatchString(texto) {
-		return err, "", ""
+		return errors.New("no match"), "", ""
 	}
 
 	fds := regex.FindString(texto)
@@ -271,7 +269,7 @@ func Parse(c echo.Context) (error, string, string) {
 	fmt.Printf("linhas[0]: %v\n", linhas[0])
 	fmt.Printf("linhas[1]: %v\n", linhas[1])
 
-	return nil, "", ""
+	return nil, linhas[0], linhas[1]
 }
 
 func splitLines(s string) []string {
