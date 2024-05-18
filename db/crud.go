@@ -52,8 +52,9 @@ func GetArtigoPorId(tx *sqlx.Tx, id string) (*modelos.ArtigoGetDTO, error) {
 }
 
 func CreateArtigo(tx *sqlx.Tx, a *modelos.ArtigoCreateDTO) (sql.Result, error) {
-	nstmt, err := tx.PrepareNamed("INSERT INTO artigo (uuid, titulo, subtitulo, idautor) values (:uuid, :titulo, :subtitulo, :idautor, 0)")
+	nstmt, err := tx.PrepareNamed("INSERT INTO artigo (uuid, titulo, subtitulo, idautor, estrelas) values (:uuid, :titulo, :subtitulo, :idautor, 0)")
 	if err != nil {
+		println("primeiro erro")
 		return nil, err
 	}
 

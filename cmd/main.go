@@ -60,6 +60,8 @@ func main() {
 
 	p.GET("/paginaupload", h.HandlePaginaUpload)
 
+	println("olaaaaaa")
+
 	e.Logger.Fatal(e.Start(":1323"))
 }
 

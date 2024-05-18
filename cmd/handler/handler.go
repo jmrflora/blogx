@@ -54,6 +54,7 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 		Ints("CategoriasIds", &blog.CategoriasIds).
 		BindError()
 	if err != nil {
+		println("aqui aaaaaaaa" + err.Error())
 		return err
 	}
 
@@ -79,7 +80,7 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 
 	_, err = db.CreateBlog(tx, &b)
 	if err != nil {
-		println("aquiiiiiiii")
+		println(err.Error())
 		return err
 	}
 
