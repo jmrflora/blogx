@@ -8,49 +8,48 @@ import (
 templ Uploadartigo(id int, categorias []modelos.Categoria) {
 	<div class="d-flex justify-content-center">
 		<div class="w-75">
-			<form
-				hx-encoding="multipart/form-data"
-				hx-post="/upload"
-				hx-target="#corpo"
-				hx-swap="innerHTML"
-			>
-				<textarea
-					name="texto"
-					id="txt"
-				></textarea>
+			<form hx-encoding="multipart/form-data" hx-post="/upload" hx-target="#corpo" hx-swap="innerHTML">
+				<textarea name="texto" id="txt"></textarea>
 				<div class="input-group">
-					<button type="button" class="btn dropdown-toggle w-100" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+					<button
+						type="button"
+						class="btn dropdown-toggle w-100"
+						data-bs-auto-close="outside"
+						data-bs-toggle="dropdown"
+					>
 						categorias
 					</button>
 					<ul class="dropdown-menu w-100">
 						for _, categoria := range categorias {
 							<li>
-								<input class="form-check-input" type="checkbox" value={ strconv.Itoa(categoria.Id) } name="CategoriasIds"/>
+								<input
+									class="form-check-input"
+									type="checkbox"
+									value={ strconv.Itoa(categoria.Id) }
+									name="CategoriasIds"
+								/>
 								<label clas="form-check-label">{ categoria.NomeCategoria }</label>
 							</li>
 						}
 					</ul>
 				</div>
-				<input class="btn btn-primary" type="submit" value="Submit"/>
+				<input class="btn btn-primary mt-2" type="submit" value="Submit"/>
 			</form>
 		</div>
-		<button _="on click call changeTextareaValue() then js htmx.trigger('#txt', 'myevent') end">
-			Click me.
-		</button>
 	</div>
 	<script id="footer" hx-swap-oob="beforeend" src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 	<script>
-    var simplemde = new SimpleMDE();
+	var simplemde = new SimpleMDE();
 
-    htmx.on("htmx:beforeSend", function(evt){
-      var textarea = document.getElementById('txt');
-      textarea.value = simplemde.value();
-    })
+	htmx.on("htmx:beforeSend", function (evt) {
+		var textarea = document.getElementById('txt');
+		textarea.value = simplemde.value();
+	})
 
-    function changeTextareaValue() {
-      console.log("to aqui")
-      var textarea = document.getElementById('txt');
-      textarea.value = simplemde.value();
-    }
-  </script>
+	function changeTextareaValue() {
+		console.log("to aqui")
+		var textarea = document.getElementById('txt');
+		textarea.value = simplemde.value();
+	}
+</script>
 }
