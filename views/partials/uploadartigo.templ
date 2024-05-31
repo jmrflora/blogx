@@ -51,5 +51,35 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
 		var textarea = document.getElementById('txt');
 		textarea.value = simplemde.value();
 	}
+  
+  document.body.addEventListener("myEvent", function(evt){
+    const modal = document.getElementById('staticBackdrop');
+    modal.toggle();
+    alert("deu trigger aqui");
+  })
+  htmx.on("htmx:load", function (evt) {
+    const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
+        backdrop: 'static'
+      })
+    myModal.toggle();
+  })
 </script>
+}
+
+templ Modal() {
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">Sucesso!</h1>
+				</div>
+				<div class="modal-body">
+					<p>Artigo enviado com sucesso.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+				</div>
+			</div>
+		</div>
+	</div>
 }

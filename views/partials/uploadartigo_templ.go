@@ -64,7 +64,31 @@ func Uploadartigo(id int, categorias []modelos.Categoria) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></div><input class=\"btn btn-primary mt-2\" type=\"submit\" value=\"Submit\"></form></div></div><script id=\"footer\" hx-swap-oob=\"beforeend\" src=\"https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js\"></script><script>\n\tvar simplemde = new SimpleMDE();\n\n\thtmx.on(\"htmx:beforeSend\", function (evt) {\n\t\tvar textarea = document.getElementById('txt');\n\t\ttextarea.value = simplemde.value();\n\t})\n\n\tfunction changeTextareaValue() {\n\t\tconsole.log(\"to aqui\")\n\t\tvar textarea = document.getElementById('txt');\n\t\ttextarea.value = simplemde.value();\n\t}\n</script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></div><input class=\"btn btn-primary mt-2\" type=\"submit\" value=\"Submit\"></form></div></div><script id=\"footer\" hx-swap-oob=\"beforeend\" src=\"https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js\"></script><script>\n\tvar simplemde = new SimpleMDE();\n\n\thtmx.on(\"htmx:beforeSend\", function (evt) {\n\t\tvar textarea = document.getElementById('txt');\n\t\ttextarea.value = simplemde.value();\n\t})\n\n\tfunction changeTextareaValue() {\n\t\tconsole.log(\"to aqui\")\n\t\tvar textarea = document.getElementById('txt');\n\t\ttextarea.value = simplemde.value();\n\t}\n  \n  document.body.addEventListener(\"myEvent\", function(evt){\n    const modal = document.getElementById('staticBackdrop');\n    modal.toggle();\n    alert(\"deu trigger aqui\");\n  })\n  htmx.on(\"htmx:load\", function (evt) {\n    const myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {\n        backdrop: 'static'\n      })\n    myModal.toggle();\n  })\n</script>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func Modal() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var4 == nil {
+			templ_7745c5c3_Var4 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"modal fade\" id=\"staticBackdrop\" data-bs-backdrop=\"static\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"staticBackdropLabel\" aria-hidden=\"true\"><div class=\"modal-dialog modal-dialog-centered\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\" id=\"staticBackdropLabel\">Sucesso!</h1></div><div class=\"modal-body\"><p>Artigo enviado com sucesso.</p></div><div class=\"modal-footer\"><button type=\"button\" class=\"btn btn-primary\" data-bs-dismiss=\"modal\">Entendido</button></div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

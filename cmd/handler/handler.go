@@ -119,7 +119,9 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	}
 
 	tx.Commit()
-	return c.HTML(http.StatusOK, fmt.Sprintf("<p>File %s uploaded successfully</p>", dst.Name()))
+	c.Response().Header().Add("HX-Trigger", "myEvent")
+
+	return views.Renderizar(partials.Modal(), c)
 }
 
 func (h *Handler) HandleUploadParse(c echo.Context) error {
