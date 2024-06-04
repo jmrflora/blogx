@@ -38,13 +38,13 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	err = echo.FormFieldBinder(c).
 		String("texto", &texto).BindError()
 	if err != nil {
-		return echo.ErrBadRequest
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 	fmt.Printf("%q\n", texto)
 
 	err, titulo, sub := Parse(texto)
 	if err != nil {
-		return echo.ErrBadRequest
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 
 	blog.Titulo = titulo
@@ -55,7 +55,8 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 		BindError()
 	if err != nil {
 		println("aqui aaaaaaaa" + err.Error())
-		return err
+
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 
 	blog.IdAutor = sess.Values["id"].(int)
@@ -63,7 +64,7 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	tx, err := h.Dbaccess.Beginx()
 	defer tx.Rollback()
 	if err != nil {
-		return err
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 
 	b := modelos.BlogCreateDTO{
@@ -81,7 +82,8 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	_, err = db.CreateBlog(tx, &b)
 	if err != nil {
 		println(err.Error())
-		return err
+
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 
 	//-----------
@@ -100,13 +102,13 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 		println("ola")
 		// Create the directory if it doesn't exist
 		if err := os.Mkdir(uploadDir, 0777); err != nil {
-			return err
+			return views.Renderizar(partials.ModalComErro(err), c)
 		}
 	}
 	dstPath := filepath.Join(uploadDir, b.Uuid)
 	dst, err := os.Create(dstPath)
 	if err != nil {
-		return err
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 	defer dst.Close()
 
@@ -115,7 +117,8 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	_, err = dst.WriteString(texto)
 	if err != nil {
 		println(err.Error())
-		return echo.ErrInternalServerError
+
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 
 	tx.Commit()

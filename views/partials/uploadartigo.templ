@@ -8,7 +8,7 @@ import (
 templ Uploadartigo(id int, categorias []modelos.Categoria) {
 	<div class="d-flex justify-content-center">
 		<div class="w-75">
-			<form hx-encoding="multipart/form-data" hx-post="/upload" hx-target="#corpo" hx-swap="innerHTML">
+			<form hx-encoding="multipart/form-data" hx-post="/upload" hx-target="#divmodal" hx-swap="innerHTML">
 				<textarea name="texto" id="txt"></textarea>
 				<div class="input-group">
 					<button
@@ -64,6 +64,7 @@ templ Uploadartigo(id int, categorias []modelos.Categoria) {
     myModal.toggle();
   })
 </script>
+	<div id="divmodal"></div>
 }
 
 templ Modal() {
@@ -75,6 +76,24 @@ templ Modal() {
 				</div>
 				<div class="modal-body">
 					<p>Artigo enviado com sucesso.</p>
+				</div>
+				<div class="modal-footer">
+					<a href="/" type="button" class="btn btn-primary">Entendido</a>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+templ ModalComErro(err error) {
+	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="staticBackdropLabel">Sucesso!</h1>
+				</div>
+				<div class="modal-body">
+					<p>Erro: { err.Error() }.</p>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
