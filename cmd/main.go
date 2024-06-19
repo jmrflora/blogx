@@ -42,6 +42,8 @@ func main() {
 
 	e.GET("/paginaregistro", h.HandlePaginaRegistro)
 
+	e.GET("/paginaartigos", h.HandlePaginaArtigos)
+
 	e.POST("/registro", h.HandleRegistroUsuario)
 
 	e.POST("/registro/confsenha", h.HandleRegistroUsuarioConfSenha)

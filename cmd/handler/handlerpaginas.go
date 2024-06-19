@@ -90,3 +90,16 @@ func (h *Handler) HandlePaginaRegistro(c echo.Context) error {
 
 	return views.Renderizar(cmp, c)
 }
+
+func (h *Handler) HandlePaginaArtigos(c echo.Context) error {
+	var cmp templ.Component
+	if c.Request().Header.Get("HX-Request") == "true" {
+		cmp = partials.ArtigosPartial()
+	} else {
+		cmp = paginas.PaginaArtigos()
+	}
+
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	return views.Renderizar(cmp, c)
+}
