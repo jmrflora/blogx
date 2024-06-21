@@ -27,6 +27,7 @@ type Handler struct {
 }
 
 func (h *Handler) HandleUpload(c echo.Context) error {
+	println(h.Dbaccess.Stats().InUse)
 	var blog modelos.BlogRegistroDTO
 
 	sess, err := session.Get("session", c)
@@ -61,6 +62,11 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 
 	blog.IdAutor = sess.Values["id"].(int)
 
+	err = h.Dbaccess.Ping()
+	if err != nil {
+		println(err.Error())
+	}
+
 	tx, err := h.Dbaccess.Beginx()
 	defer tx.Rollback()
 	if err != nil {
@@ -79,13 +85,21 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 
 	fmt.Printf("b: %v\n", b)
 
-	_, err = db.CreateBlog(tx, &b)
+	// _, err = db.CreateBlog(tx, &b)
+	// if err != nil {
+	// 	println(err.Error())
+	// 	println("erro aqui aa erro")
+	// 	return views.Renderizar(partials.ModalComErro(err), c)
+	// }
+	//
+	_, err = db.CreateArtigo(tx, &b.ArtigoCreateDTO)
 	if err != nil {
 		println(err.Error())
-
-		return views.Renderizar(partials.ModalComErro(err), c)
 	}
-
+	println(h.Dbaccess.Stats().MaxOpenConnections)
+	println(h.Dbaccess.Stats().InUse)
+	err = tx.Commit()
+	println(err.Error())
 	//-----------
 	// Read file
 	//-----------
@@ -122,6 +136,7 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	}
 
 	tx.Commit()
+	println("final do upload")
 	c.Response().Header().Add("HX-Trigger", "myEvent")
 
 	return views.Renderizar(partials.Modal(), c)

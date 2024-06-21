@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 func main() {
@@ -23,7 +23,12 @@ func main() {
 
 	println(id.String())
 
-	db := sqlx.MustConnect("sqlite3", "mydb.db")
+	db, err := sqlx.Connect("sqlite", "mydb.db")
+	db.SetMaxOpenConns(1)
+	if err != nil {
+		println(err.Error())
+		panic("")
+	}
 
 	h := handler.Handler{
 		Dbaccess: *db,

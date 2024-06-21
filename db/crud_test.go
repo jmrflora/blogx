@@ -73,6 +73,7 @@ func TestCreateArtigo(t *testing.T) {
 	_, err = CreateArtigo(tx, &a)
 
 	assert.NoError(t, err)
+	tx.Commit()
 }
 
 func TestCreateCategoria(t *testing.T) {
@@ -142,4 +143,5 @@ func TestCreateBlog(t *testing.T) {
 	_, err = CreateBlog(tx, &b)
 
 	assert.NoError(t, err)
+	tx.Commit()
 }
