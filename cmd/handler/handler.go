@@ -96,10 +96,13 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	if err != nil {
 		println(err.Error())
 	}
-	println(h.Dbaccess.Stats().MaxOpenConnections)
-	println(h.Dbaccess.Stats().InUse)
+	// println(h.Dbaccess.Stats().MaxOpenConnections)
+	// println(h.Dbaccess.Stats().InUse)
 	err = tx.Commit()
-	println(err.Error())
+	if err != nil {
+		println(err.Error())
+	}
+	// println(err.Error())
 	//-----------
 	// Read file
 	//-----------
@@ -110,6 +113,7 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 
 	// Destination directory
 
+	println("chegou ate aqui")
 	uploadDir := "internal/assets/markdowns/" + strconv.Itoa(sess.Values["id"].(int))
 
 	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {

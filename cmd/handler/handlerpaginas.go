@@ -42,8 +42,7 @@ func HandlePaginaLogin(c echo.Context) error {
 }
 
 func (h *Handler) HandlePaginaUpload(c echo.Context) error {
-
-	//check for cookie
+	// check for cookie
 	sess, err := session.Get("session", c)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -59,6 +58,7 @@ func (h *Handler) HandlePaginaUpload(c echo.Context) error {
 		id := sess.Values["id"].(int)
 
 		tx, err := h.Dbaccess.Beginx()
+		defer tx.Rollback()
 		if err != nil {
 			return err
 		}
@@ -71,7 +71,6 @@ func (h *Handler) HandlePaginaUpload(c echo.Context) error {
 			cmp = partials.Uploadartigo(id, categs)
 		} else {
 			cmp = paginas.PaginaUpload(id, categs)
-
 		}
 	}
 

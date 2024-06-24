@@ -24,7 +24,7 @@ func main() {
 	println(id.String())
 
 	db, err := sqlx.Connect("sqlite", "mydb.db")
-	db.SetMaxOpenConns(1)
+	// db.SetMaxOpenConns(1)
 	if err != nil {
 		println(err.Error())
 		panic("")
