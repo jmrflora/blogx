@@ -57,6 +57,8 @@ func main() {
 
 	e.POST("/registro/confsenha", h.HandleRegistroUsuarioConfSenha)
 
+	e.GET("/testeconteudo", h.HandleTesteCnteudo)
+
 	p := e.Group("", CookieAuthMiddleware)
 
 	p.POST("/upload", h.HandleUpload)

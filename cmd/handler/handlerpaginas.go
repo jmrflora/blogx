@@ -90,3 +90,30 @@ func (h *Handler) HandlePaginaRegistro(c echo.Context) error {
 
 	return views.Renderizar(cmp, c)
 }
+
+func (h *Handler) HandleTesteCnteudo(c echo.Context) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	tx, err := h.Dbaccess.Beginx()
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+	defer tx.Rollback()
+
+	a, err := db.GetArtigoPorId(tx, "2fc67b56-5b62-4341-8d95-cf90435b906c")
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	categs, err := db.GetCategorias(tx)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	autor, err := db.GetUsuarioPorId(tx, a.IdAutor)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	return views.Renderizar(paginas.ConteudoTeste(*a, categs, *autor), c)
+}

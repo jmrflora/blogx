@@ -1,0 +1,12 @@
+package paginas
+
+import (
+	"github.com/jmrflora/blogx/views/layout"
+	"github.com/jmrflora/blogx/views/partials"
+	"github.com/jmrflora/blogx/modelos"
+)
+
+templ ConteudoTeste(a modelos.ArtigoGetDTO, categs []modelos.Categoria, autor modelos.UsuarioGetDTO) {
+	@layout.BaseLogado(partials.ConteudoPartial(a, categs, autor)) {
+	}
+}
