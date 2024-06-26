@@ -5,6 +5,7 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/jmrflora/blogx/db"
+	"github.com/jmrflora/blogx/modelos"
 	"github.com/jmrflora/blogx/views"
 	"github.com/jmrflora/blogx/views/paginas"
 	"github.com/jmrflora/blogx/views/partials"
@@ -100,20 +101,49 @@ func (h *Handler) HandleTesteCnteudo(c echo.Context) error {
 	}
 	defer tx.Rollback()
 
-	a, err := db.GetArtigoPorId(tx, "2fc67b56-5b62-4341-8d95-cf90435b906c")
+	// a, err := db.GetArtigoPorId(tx, "2fc67b56-5b62-4341-8d95-cf90435b906c")
+	// if err != nil {
+	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	// }
+	//
+	// categs, err := db.GetCategorias(tx)
+	// if err != nil {
+	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	// }
+	//
+	// autor, err := db.GetUsuarioPorId(tx, a.IdAutor)
+	// if err != nil {
+	// 	return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	// }
+	//
+
+	artigos, err := db.GetArtigoPagina(tx, 1)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
 	}
 
-	categs, err := db.GetCategorias(tx)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	arts := []modelos.ArtigoGetDtoCatgsUsuario{}
+
+	for _, artigo := range artigos {
+		ctgs, err := db.GetCategoriasDeArtigo(tx, artigo.Uuid)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		u, err := db.GetUsuarioPorId(tx, artigo.IdAutor)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+		a := modelos.ArtigoGetDtoCatgsUsuario{
+			ArtigoGetDTO:  artigo,
+			Categs:        ctgs,
+			UsuarioGetDTO: *u,
+		}
+
+		arts = append(arts, a)
 	}
 
-	autor, err := db.GetUsuarioPorId(tx, a.IdAutor)
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
-	}
+	cmp := paginas.Conteudos(arts)
 
-	return views.Renderizar(paginas.ConteudoTeste(*a, categs, *autor), c)
+	return views.Renderizar(cmp, c)
 }

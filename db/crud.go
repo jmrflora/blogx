@@ -51,6 +51,21 @@ func GetArtigoPorId(tx *sqlx.Tx, id string) (*modelos.ArtigoGetDTO, error) {
 	return &a, nil
 }
 
+func GetArtigoPagina(tx *sqlx.Tx, pag int) ([]modelos.ArtigoGetDTO, error) {
+	limit := 3
+	offset := (pag - 1) * limit
+
+	artgs := []modelos.ArtigoGetDTO{}
+
+	err := tx.
+		Select(&artgs, "SELECT artigo.uuid, artigo.titulo, artigo.subtitulo, artigo.idautor, artigo.estrelas from artigo limit $1 OFFSET $2", limit, offset)
+	if err != nil {
+		return nil, err
+	}
+
+	return artgs, nil
+}
+
 func CreateArtigo(tx *sqlx.Tx, a *modelos.ArtigoCreateDTO) (sql.Result, error) {
 	nstmt, err := tx.PrepareNamed("INSERT INTO artigo (uuid, titulo, subtitulo, idautor, estrelas) values (:uuid, :titulo, :subtitulo, :idautor, 0)")
 	if err != nil {
@@ -85,6 +100,17 @@ func GetCategorias(tx *sqlx.Tx) ([]modelos.Categoria, error) {
 		return nil, err
 	}
 	return mc, err
+}
+
+func GetCategoriasDeArtigo(tx *sqlx.Tx, id string) ([]modelos.Categoria, error) {
+	mc := []modelos.Categoria{}
+
+	err := tx.
+		Select(&mc, "SELECT categoria.idcateg, categoria.nomecateg from categoria inner join categoriasdeartigo c on c.idcategoria = categoria.idcateg inner join artigo on c.idartigo = artigo.uuid WHERE artigo.uuid = $1", id)
+	if err != nil {
+		return nil, err
+	}
+	return mc, nil
 }
 
 func CreateCategoriasDeArtigo(tx *sqlx.Tx, idArtigo string, idCategoria int) (sql.Result, error) {

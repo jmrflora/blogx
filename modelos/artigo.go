@@ -16,6 +16,17 @@ type ArtigoGetDTO struct {
 	Estrelas  int
 }
 
+type ArtigoGetDtoCatgs struct {
+	categs []Categoria
+	ArtigoGetDTO
+}
+
+type ArtigoGetDtoCatgsUsuario struct {
+	UsuarioGetDTO
+	Categs []Categoria
+	ArtigoGetDTO
+}
+
 type ArtigoCreateDTO struct {
 	Uuid      string
 	Titulo    string

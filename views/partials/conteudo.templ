@@ -5,8 +5,17 @@ import (
 	"strconv"
 )
 
+templ PaginacaoConteudo(artigos []modelos.ArtigoGetDtoCatgsUsuario, pag int) {
+	<div id="pagina">
+		for _, artigo := range artigos {
+			@ConteudoPartial(artigo.ArtigoGetDTO, artigo.Categs, artigo.UsuarioGetDTO)
+		}
+		<div hx-get={ "/artigos/" + strconv.Itoa(pag+1) } hx-trigger="revealed" hx-swap="afeterend" hx-target="#pagina"></div>
+	</div>
+}
+
 templ ConteudoPartial(artigo modelos.ArtigoGetDTO, categs []modelos.Categoria, autor modelos.UsuarioGetDTO) {
-	<div class="d-flex justify-content-center w-auto mb-3 border border-start border-end">
+	<div class="d-flex justify-content-center w-auto mb-3 border border-start">
 		<div class="d-flex w-75 mb-3">
 			<div class="me-auto">
 				<div class="my-3">

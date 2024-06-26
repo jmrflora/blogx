@@ -10,3 +10,7 @@ templ ConteudoTeste(a modelos.ArtigoGetDTO, categs []modelos.Categoria, autor mo
 	@layout.BaseLogado(partials.ConteudoPartial(a, categs, autor)) {
 	}
 }
+
+templ Conteudos(artgs []modelos.ArtigoGetDtoCatgsUsuario) {
+	@layout.BaseLogado(partials.PaginacaoConteudo(artgs, 1))
+}
