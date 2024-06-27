@@ -60,6 +60,9 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 		return views.Renderizar(partials.ModalComErro(err), c)
 	}
 
+	println("categorias aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	fmt.Printf("blog.CategoriasIds: %v\n", blog.CategoriasIds)
+
 	blog.IdAutor = sess.Values["id"].(int)
 
 	err = h.Dbaccess.Ping()
@@ -92,10 +95,17 @@ func (h *Handler) HandleUpload(c echo.Context) error {
 	// 	return views.Renderizar(partials.ModalComErro(err), c)
 	// }
 	//
-	_, err = db.CreateArtigo(tx, &b.ArtigoCreateDTO)
+
+	_, err = db.CreateBlog(tx, &b)
 	if err != nil {
-		println(err.Error())
+		return views.Renderizar(partials.ModalComErro(err), c)
 	}
+
+	// _, err = db.CreateArtigo(tx, &b.ArtigoCreateDTO)
+	// if err != nil {
+	// 	println(err.Error())
+	// }
+
 	// println(h.Dbaccess.Stats().MaxOpenConnections)
 	// println(h.Dbaccess.Stats().InUse)
 	err = tx.Commit()

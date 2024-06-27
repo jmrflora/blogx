@@ -141,6 +141,15 @@ func (h *Handler) HandleTesteCnteudo(c echo.Context) error {
 		}
 
 		arts = append(arts, a)
+
+	}
+
+	for _, art := range arts {
+		println(art.Titulo)
+		println("dash")
+		for _, catg := range art.Categs {
+			println(catg.NomeCategoria)
+		}
 	}
 
 	cmp := paginas.Conteudos(arts)
