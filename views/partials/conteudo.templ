@@ -6,12 +6,12 @@ import (
 )
 
 templ PaginacaoConteudo(artigos []modelos.ArtigoGetDtoCatgsUsuario, pag int) {
-	<div id="pagina">
+	<div class="classediv">
 		for _, artigo := range artigos {
 			@ConteudoPartial(artigo.ArtigoGetDTO, artigo.Categs, artigo.UsuarioGetDTO)
 		}
-		<div hx-get={ "/artigos/" + strconv.Itoa(pag+1) } hx-trigger="revealed" hx-swap="afeterend" hx-target="#pagina"></div>
 	</div>
+	<div hx-get={ "/artigos/" + strconv.Itoa(pag+1) } hx-trigger="revealed" hx-swap="afeterend" hx-target="this">.</div>
 }
 
 templ ConteudoPartial(artigo modelos.ArtigoGetDTO, categs []modelos.Categoria, autor modelos.UsuarioGetDTO) {

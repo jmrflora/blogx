@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/a-h/templ"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
@@ -278,6 +279,56 @@ func (h *Handler) HandleRegistroUsuarioConfSenha(c echo.Context) error {
 	}
 
 	return views.Renderizar(partials.DivComSenha(u.ConfSenha), c)
+}
+
+func (h *Handler) HandleArtigosPag(c echo.Context) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	p := c.Param("pag")
+
+	pag, _ := strconv.Atoi(p)
+
+	tx, err := h.Dbaccess.Beginx()
+	if err != nil {
+		return err
+	}
+
+	artigos, err := db.GetArtigoPagina(tx, pag)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	arts := []modelos.ArtigoGetDtoCatgsUsuario{}
+
+	if len(artigos) < 1 {
+		cmp := templ.NopComponent
+		fmt.Printf("arts: %v\n", arts)
+		println(pag)
+		return views.Renderizar(cmp, c)
+	}
+
+	for _, artigo := range artigos {
+		ctgs, err := db.GetCategoriasDeArtigo(tx, artigo.Uuid)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		u, err := db.GetUsuarioPorId(tx, artigo.IdAutor)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+		a := modelos.ArtigoGetDtoCatgsUsuario{
+			ArtigoGetDTO:  artigo,
+			Categs:        ctgs,
+			UsuarioGetDTO: *u,
+		}
+
+		arts = append(arts, a)
+
+	}
+
+	cmp := partials.PaginacaoConteudo(arts, pag)
+	return views.Renderizar(cmp, c)
 }
 
 func CheckPasswordHash(password, hash string) bool {
