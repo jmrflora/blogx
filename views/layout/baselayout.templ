@@ -23,6 +23,7 @@ templ Head() {
 		<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
 		<script src="/assets/js/htmx.min.js"></script>
 		<script src="/assets/js/bootstrap.bundle.min.js"></script>
+		<script type="module" src="https://md-block.verou.me/md-block.js"></script>
 	</head>
 }
 
@@ -32,7 +33,6 @@ templ Base(titulo string, navbar templ.Component) {
 		@Head()
 		<body>
 			@navbar
-			<h1>Olá, mundo! { titulo }</h1>
 			<section id="corpo">
 				{ children... }
 			</section>
@@ -56,9 +56,7 @@ templ FimNavDivLogado() {
 			<i class="bi bi-person fs-3" style="color: cornflowerblue;"></i>
 		</button>
 		<ul class="dropdown-menu dropdown-menu-start">
-			<li><a class="dropdown-item" href="#">Action</a></li>
-			<li><a class="dropdown-item" href="#">Another action</a></li>
-			<li><a class="dropdown-item" href="#">Something else </a></li>
+			<li><a class="dropdown-item" href="/paginaupload">Escrever artigo</a></li>
 		</ul>
 	</div>
 }

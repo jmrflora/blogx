@@ -14,34 +14,40 @@ templ PaginacaoConteudo(artigos []modelos.ArtigoGetDtoCatgsUsuario, pag int) {
 	<div hx-get={ "/artigos/" + strconv.Itoa(pag+1) } hx-trigger="revealed" hx-swap="afeterend" hx-target="this">.</div>
 }
 
+func Source(id int) string {
+	return "/artigo/" + strconv.Itoa(id)
+}
+
 templ ConteudoPartial(artigo modelos.ArtigoGetDTO, categs []modelos.Categoria, autor modelos.UsuarioGetDTO) {
-	<div class="d-flex justify-content-center w-auto mb-3 border border-start">
-		<div class="d-flex w-75 mb-3">
-			<div class="me-auto">
-				<div class="my-3">
-					<h2>{ artigo.Titulo }</h2>
-				</div>
-				<div class="my-3">
-					<h3>{ artigo.Subtitulo }</h3>
-				</div>
-				<div>
-					<ul class="list-group list-group-horizontal">
-						for _, categ := range categs {
-							<li class="list-group-item flex-fill">{ categ.NomeCategoria }</li>
-						}
-					</ul>
-				</div>
-			</div>
-			<div>
-				<div>
-					<p>
-						Escrito por { autor.Nome }
-					</p>
+	<a class="link-dark link-offset-2 link-underline link-underline-opacity-0" href={ templ.SafeURL("/artigo/" + artigo.Uuid) }>
+		<div class="d-flex justify-content-center w-auto mb-3 border border-start">
+			<div class="d-flex w-75 mb-3">
+				<div class="me-auto">
+					<div class="my-3">
+						<h2>{ artigo.Titulo }</h2>
+					</div>
+					<div class="my-3">
+						<h3>{ artigo.Subtitulo }</h3>
+					</div>
+					<div>
+						<ul class="list-group list-group-horizontal">
+							for _, categ := range categs {
+								<li class="list-group-item flex-fill">{ categ.NomeCategoria }</li>
+							}
+						</ul>
+					</div>
 				</div>
 				<div>
-					<p>{ strconv.Itoa(artigo.Estrelas) } <i class="bi bi-star"></i></p>
+					<div>
+						<p>
+							Escrito por { autor.Nome }
+						</p>
+					</div>
+					<div>
+						<p>{ strconv.Itoa(artigo.Estrelas) } <i class="bi bi-star"></i></p>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</a>
 }

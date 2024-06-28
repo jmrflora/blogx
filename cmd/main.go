@@ -61,6 +61,8 @@ func main() {
 
 	e.GET("/artigos/:pag", h.HandleArtigosPag)
 
+	e.GET("/artigo/:id", h.HandleArtigo)
+
 	p := e.Group("", CookieAuthMiddleware)
 
 	p.POST("/upload", h.HandleUpload)

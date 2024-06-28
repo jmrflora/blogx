@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/a-h/templ"
 	"github.com/jmrflora/blogx/db"
@@ -154,5 +155,24 @@ func (h *Handler) HandleTesteCnteudo(c echo.Context) error {
 
 	cmp := paginas.Conteudos(arts)
 
+	return views.Renderizar(cmp, c)
+}
+
+func (h *Handler) HandleArtigo(c echo.Context) error {
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+	id := c.Param("id")
+	tx, err := h.Dbaccess.Beginx()
+	if err != nil {
+		return err
+	}
+
+	art, err := db.GetArtigoPorId(tx, id)
+	if err != nil {
+		return err
+	}
+
+	src := "/assets/markdowns/" + strconv.Itoa(art.IdAutor) + "/" + id
+
+	cmp := paginas.PaginaArtigo(src)
 	return views.Renderizar(cmp, c)
 }
