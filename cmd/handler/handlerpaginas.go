@@ -54,7 +54,8 @@ func (h *Handler) HandlePaginaUpload(c echo.Context) error {
 
 	if sess.IsNew {
 		// handle não ser logado
-		cmp = paginas.Index()
+
+		return c.Redirect(301, "/")
 	} else {
 
 		id := sess.Values["id"].(int)
@@ -152,8 +153,13 @@ func (h *Handler) HandleTesteCnteudo(c echo.Context) error {
 			println(catg.NomeCategoria)
 		}
 	}
-
-	cmp := paginas.Conteudos(arts)
+	var cmp templ.Component
+	sess, _ := session.Get("session", c)
+	if sess.IsNew {
+		cmp = paginas.ConteudosNaoLogado(arts)
+	} else {
+		cmp = paginas.Conteudos(arts)
+	}
 
 	return views.Renderizar(cmp, c)
 }

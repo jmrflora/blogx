@@ -14,3 +14,7 @@ templ ConteudoTeste(a modelos.ArtigoGetDTO, categs []modelos.Categoria, autor mo
 templ Conteudos(artgs []modelos.ArtigoGetDtoCatgsUsuario) {
 	@layout.BaseLogado(partials.PaginacaoConteudo(artgs, 1))
 }
+
+templ ConteudosNaoLogado(artgs []modelos.ArtigoGetDtoCatgsUsuario) {
+	@layout.BaseNaoLogado(partials.PaginacaoConteudo(artgs, 1))
+}

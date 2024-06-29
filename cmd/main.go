@@ -45,11 +45,13 @@ func main() {
 
 	e.Static("/assets", "internal/assets")
 
-	e.GET("/", handler.HandleIndex)
+	e.GET("/", h.HandleTesteCnteudo)
 
 	e.GET("/paginalogin", handler.HandlePaginaLogin)
 
 	e.POST("/login", h.HandleLogin)
+
+	e.GET("/logout", h.HandleLogout)
 
 	e.GET("/paginaregistro", h.HandlePaginaRegistro)
 

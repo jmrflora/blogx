@@ -11,7 +11,13 @@ templ PaginacaoConteudo(artigos []modelos.ArtigoGetDtoCatgsUsuario, pag int) {
 			@ConteudoPartial(artigo.ArtigoGetDTO, artigo.Categs, artigo.UsuarioGetDTO)
 		}
 	</div>
-	<div hx-get={ "/artigos/" + strconv.Itoa(pag+1) } hx-trigger="revealed" hx-swap="afeterend" hx-target="this">.</div>
+	<div id="divload" hx-target="this">
+		<button hx-get={ "/artigos/" + strconv.Itoa(pag+1) } hx-swap="afeterend" type="button" class="btn btn-primary">Carregar</button>
+	</div>
+}
+
+templ DivTroca() {
+	<div></div>
 }
 
 func Source(id int) string {

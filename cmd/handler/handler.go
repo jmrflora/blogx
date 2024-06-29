@@ -10,7 +10,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/a-h/templ"
 	"github.com/google/uuid"
 	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
@@ -289,10 +288,11 @@ func (h *Handler) HandleArtigosPag(c echo.Context) error {
 	pag, _ := strconv.Atoi(p)
 
 	tx, err := h.Dbaccess.Beginx()
+	defer tx.Rollback()
 	if err != nil {
 		return err
 	}
-
+	println(pag)
 	artigos, err := db.GetArtigoPagina(tx, pag)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
@@ -301,9 +301,11 @@ func (h *Handler) HandleArtigosPag(c echo.Context) error {
 	arts := []modelos.ArtigoGetDtoCatgsUsuario{}
 
 	if len(artigos) < 1 {
-		cmp := templ.NopComponent
+		cmp := partials.DivTroca()
 		fmt.Printf("arts: %v\n", arts)
 		println(pag)
+
+		c.Response().Header().Add("HX-Reswap", "outerHTML")
 		return views.Renderizar(cmp, c)
 	}
 
@@ -329,6 +331,20 @@ func (h *Handler) HandleArtigosPag(c echo.Context) error {
 
 	cmp := partials.PaginacaoConteudo(arts, pag)
 	return views.Renderizar(cmp, c)
+}
+
+func (h *Handler) HandleLogout(c echo.Context) error {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return err
+	}
+	sess.Options = &sessions.Options{
+		MaxAge: -1,
+	}
+
+	sess.Save(c.Request(), c.Response())
+	c.Response().Header().Add("HX-Redirect", "/")
+	return echo.NewHTTPError(http.StatusOK, "ok")
 }
 
 func CheckPasswordHash(password, hash string) bool {

@@ -205,7 +205,7 @@ func FimNavDivLogado() templ.Component {
 			templ_7745c5c3_Var8 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-flex gap-3 dropdown ps-5 me-5\"><button class=\"btn dropdown-toggle\" type=\"button\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-person fs-3\" style=\"color: cornflowerblue;\"></i></button><ul class=\"dropdown-menu dropdown-menu-start\"><li><a class=\"dropdown-item\" href=\"/paginaupload\">Escrever artigo</a></li></ul></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"d-flex gap-3 dropdown ps-5 me-5\"><button class=\"btn dropdown-toggle\" type=\"button\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-person fs-3\" style=\"color: cornflowerblue;\"></i></button><ul class=\"dropdown-menu dropdown-menu-start\"><li><a class=\"dropdown-item\" href=\"/paginaupload\">Escrever artigo</a></li><li><a class=\"dropdown-item\" href=\"/logout\" hx-boost=\"true\">logout</a></li></ul></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
